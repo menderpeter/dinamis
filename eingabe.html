@@ -41,7 +41,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* Main Content */
 .main{flex:1;display:flex;overflow:hidden}
 .content{flex:1;overflow-y:auto;padding:24px 32px}
-.guide-panel{width:320px;background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;padding:20px;flex-shrink:0}
+.guide-panel{width:320px;background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;padding:20px;flex-shrink:0;position:relative}
+.guide-close{position:absolute;top:8px;right:8px;background:var(--surface);border:1px solid var(--border);font-size:20px;color:var(--muted);cursor:pointer;z-index:5;padding:2px 8px;line-height:1;border-radius:4px}
+.guide-close:hover{color:var(--text);background:var(--border)}
+.guide-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100}
+.guide-overlay.active{display:block}
+.guide-panel.desktop-hidden{display:none}
 
 /* Step Content */
 .step{display:none}
@@ -99,7 +104,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .guide-item.example{border-left-color:var(--yellow);background:rgba(234,179,8,.05)}
 .guide-item.question{border-left-color:var(--green);background:rgba(34,197,94,.05)}
 .guide-toggle{display:none}
-.guide-btn{display:none;position:fixed;right:16px;bottom:16px;z-index:50}
+.guide-btn{position:fixed;right:16px;bottom:16px;z-index:50}
 
 /* Section Divider */
 .section-div{margin:24px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border2);font-size:14px;font-weight:600;color:var(--text)}
@@ -118,8 +123,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* Responsive */
 @media(max-width:1024px){
   .guide-panel{display:none}
-  .guide-panel.mobile-open{display:block;position:fixed;right:0;top:0;bottom:0;z-index:100;width:320px;box-shadow:-4px 0 20px rgba(0,0,0,.5)}
-  .guide-btn{display:block}
+  .guide-panel.mobile-open{display:block;position:fixed;right:0;top:0;bottom:0;z-index:101;width:320px;box-shadow:-4px 0 20px rgba(0,0,0,.5)}
   .sidebar{width:60px}
   .nav-label{display:none}
 }
@@ -172,6 +176,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<div class="guide-overlay" id="guide-overlay" onclick="toggleGuide()"></div>
 <button class="btn guide-btn" onclick="toggleGuide()">Anleitung</button>
 
 <script>
@@ -464,7 +469,8 @@ function goStep(id) {
 function renderGuide() {
   const g = GUIDES[currentStep];
   if (!g) { document.getElementById('guide-panel').innerHTML = ''; return; }
-  let html = `<div class="guide-title">${ICO[currentStep] || ''} ${g.title}</div>`;
+  let html = `<button class="guide-close" onclick="toggleGuide()" title="Schliessen">&times;</button>`;
+  html += `<div class="guide-title">${ICO[currentStep] || ''} ${g.title}</div>`;
   g.sections.forEach(s => {
     html += `<div class="guide-section"><h4>${s.h}</h4>`;
     s.items.forEach(it => {
@@ -730,8 +736,17 @@ function renderS6() {
 function esc(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; }
 
 function toggleGuide() {
-  document.getElementById('guide-panel').classList.toggle('mobile-open');
+  const panel = document.getElementById('guide-panel');
+  const overlay = document.getElementById('guide-overlay');
+  const isMobile = window.innerWidth <= 1024;
+  if (isMobile) {
+    panel.classList.toggle('mobile-open');
+    if (overlay) overlay.classList.toggle('active');
+  } else {
+    panel.classList.toggle('desktop-hidden');
+  }
 }
+
 
 // ====== IMPORT ======
 function importExcel(file) {
@@ -1002,7 +1017,14 @@ function openHTMLAusgabe() {
   };
   // Open Ausgabe with data in hash
   const json = encodeURIComponent(JSON.stringify(data));
-  window.open('ausgabe.html#' + json, '_blank');
+  // Use link click instead of window.open to avoid popup blockers on iOS
+  const a = document.createElement('a');
+  a.href = 'ausgabe.html#' + json;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 // ====== INIT ======
