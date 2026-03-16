@@ -152,9 +152,66 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .nav-item.active .phase-icon{filter:brightness(1) saturate(1)}
 .step-title .phase-icon{width:28px;height:28px;vertical-align:middle;margin-right:6px}
 .guide-title .phase-icon{width:22px;height:22px;vertical-align:middle;margin-right:6px}
+
+/* Balloon Tooltips */
+.tt-wrap{position:relative;display:inline-flex;align-items:center;margin-left:6px;vertical-align:middle}
+.tt-icon{width:18px;height:18px;border-radius:50%;background:rgba(59,130,246,.2);border:1px solid rgba(96,165,250,.4);color:var(--accent2);font-size:11px;font-weight:700;font-style:italic;display:inline-flex;align-items:center;justify-content:center;cursor:help;transition:all .25s;flex-shrink:0;line-height:1;font-family:Georgia,serif;user-select:none}
+.tt-icon:hover{background:rgba(59,130,246,.35);border-color:var(--accent2);transform:scale(1.15)}
+.tt-balloon{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%) scale(0.9);opacity:0;pointer-events:none;background:var(--surface2);border:1px solid var(--accent);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.5;color:var(--text);min-width:220px;max-width:320px;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.4);transition:all .25s;white-space:normal;font-style:normal;font-weight:400;text-align:left}
+.tt-balloon::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:8px solid transparent;border-top-color:var(--accent)}
+.tt-balloon.tt-show{opacity:1;pointer-events:auto;transform:translateX(-50%) scale(1)}
+.tt-balloon.tt-down{bottom:auto;top:calc(100% + 12px)}
+.tt-balloon.tt-down::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--accent)}
+.tt-balloon.tt-right{left:0;transform:translateX(0) scale(0.9)}
+.tt-balloon.tt-right.tt-show{transform:translateX(0) scale(1)}
+.tt-balloon.tt-right::after{left:14px;transform:none}
+.tt-balloon.tt-left{left:auto;right:0;transform:translateX(0) scale(0.9)}
+.tt-balloon.tt-left.tt-show{transform:translateX(0) scale(1)}
+.tt-balloon.tt-left::after{left:auto;right:14px;transform:none}
+.tt-balloon-title{font-weight:600;color:var(--accent2);margin-bottom:4px;font-size:12px}
+.tt-hdr-wrap{display:inline-flex;align-items:center;gap:0}
+
+/* Welcome Modal */
+.welcome-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.welcome-overlay.hidden{display:none}
+.welcome-box{background:var(--surface);border:1px solid var(--accent);border-radius:16px;max-width:520px;width:100%;padding:32px 28px 24px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
+.welcome-badge{display:inline-block;background:rgba(59,130,246,.15);border:1px solid rgba(96,165,250,.3);border-radius:20px;padding:4px 16px;font-size:11px;color:var(--accent2);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.welcome-box h2{font-size:22px;font-weight:700;margin-bottom:4px;color:var(--text)}
+.welcome-box h2 span{color:var(--accent2)}
+.welcome-box .welcome-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.welcome-phases{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;margin-bottom:20px}
+.welcome-phase{background:var(--surface2);border-radius:8px;padding:10px 12px;border-left:3px solid var(--accent)}
+.welcome-phase .wp-label{font-size:12px;font-weight:600;color:var(--accent2)}
+.welcome-phase .wp-desc{font-size:11px;color:var(--text2);line-height:1.4;margin-top:2px}
+.welcome-box .welcome-start{background:var(--accent);color:#fff;border:none;padding:12px 32px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:all .2s}
+.welcome-box .welcome-start:hover{background:var(--accent2)}
+.welcome-check{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:11px;color:var(--text3)}
+
+/* Auto-grow textarea */
+textarea.auto-ta{resize:none;overflow:hidden;min-height:36px}
+
+@media(max-width:768px){.guide-btn{bottom:72px}.content{padding-bottom:80px}}
 </style>
 </head>
 <body>
+
+<div class="welcome-overlay" id="welcome-modal">
+  <div class="welcome-box">
+    <div class="welcome-badge">Strategische Kundengewinnung</div>
+    <h2>DINAMIS<span>&reg;</span></h2>
+    <p class="welcome-sub">Strategische Kundengewinnung mit System</p>
+    <div class="welcome-phases">
+      <div class="welcome-phase"><div class="wp-label">M1 - Meine Stärken</div><div class="wp-desc">Idealer Kunde, Stärken-Analyse und Strategic Fit</div></div>
+      <div class="welcome-phase"><div class="wp-label">DI2 - Dialog</div><div class="wp-desc">Key Player identifizieren und Motivation verstehen</div></div>
+      <div class="welcome-phase"><div class="wp-label">N3 - Nennen & Erkennen</div><div class="wp-desc">Win-Win Matrix und Herausforderungen benennen</div></div>
+      <div class="welcome-phase"><div class="wp-label">I4 - Intensives Handeln</div><div class="wp-desc">Maßnahmen aktivieren und Implementation sichern</div></div>
+      <div class="welcome-phase"><div class="wp-label">A5 - Anerkennung</div><div class="wp-desc">Erfolge würdigen und Partnerschaft entwickeln</div></div>
+      <div class="welcome-phase"><div class="wp-label">S - Die Sinnfrage</div><div class="wp-desc">Purpose und Win-Win Mehrwert verbinden</div></div>
+    </div>
+    <button class="welcome-start" onclick="closeWelcome()">Los geht's</button>
+    <label class="welcome-check"><input type="checkbox" id="welcome-hide-check"> Nicht mehr anzeigen</label>
+  </div>
+</div>
 
 <div class="header">
   <h1>DINAMIS<span>.</span> Eingabe</h1>
@@ -192,8 +249,8 @@ const D = {
     keyPlayers: [
       {name:'',rolle:'Entscheider',motivation:''},
       {name:'',rolle:'Anwender',motivation:''},
-      {name:'',rolle:'Experte/Waechter',motivation:''},
-      {name:'',rolle:'Coach/Unterstuetzer',motivation:''},
+      {name:'',rolle:'Experte/Wächter',motivation:''},
+      {name:'',rolle:'Coach/Unterstützer',motivation:''},
       {name:'',rolle:'',motivation:''},
       {name:'',rolle:'',motivation:''},
       {name:'',rolle:'',motivation:''}
@@ -226,8 +283,8 @@ const D = {
 
 // ====== STEPS DEFINITION ======
 const STEPS = [
-  {id:'start',label:'Kundenprofil',sub:'Grunddaten',num:'0'},
-  {id:'m1',label:'Meine Staerken',sub:'M1',num:'M1'},
+  {id:'start',label:'Kundenprofil',sub:'Grunddaten',num:'\u25CB'},
+  {id:'m1',label:'Meine Stärken',sub:'M1',num:'M1'},
   {id:'di2',label:'Dialog',sub:'DI2',num:'DI'},
   {id:'n3',label:'Nennen',sub:'N3',num:'N3'},
   {id:'i4',label:'Intensives Handeln',sub:'I4',num:'I4'},
@@ -262,28 +319,28 @@ const GUIDES = {
     ]
   },
   m1: {
-    title: 'M1 - Meine Staerken',
+    title: 'M1 - Meine Stärken',
     sections: [
       {h:'Idealer Kunde definieren',items:[
-        'Was macht einen "perfekten" Kunden fuer uns aus?',
-        'Welche Merkmale fuehren zu erfolgreichen Projekten?',
-        'Welche Voraussetzungen muessen erfuellt sein? Was sind absolute Ausschlusskriterien?'
+        'Was macht einen "perfekten" Kunden für uns aus?',
+        'Welche Merkmale führen zu erfolgreichen Projekten?',
+        'Welche Voraussetzungen müssen erfuellt sein? Was sind absolute Ausschlusskriterien?'
       ],type:'question'},
       {h:'Zugang & Beziehung',items:[
-        'Analysiere den Zugang zu Entscheidungstraegern',
+        'Analysiere den Zugang zu Entscheidungsträgern',
         'Wie sind Entscheidungsprozesse strukturiert?',
-        'Welche Hierarchieebenen muessen erreicht werden?',
-        'Welche Beziehungsqualitaet ist notwendig?'
+        'Welche Hierarchieebenen müssen erreicht werden?',
+        'Welche Beziehungsqualität ist notwendig?'
       ],type:'question'},
-      {h:'Eigene Staerken analysieren',items:[
+      {h:'Eigene Stärken analysieren',items:[
         'Mache eine Bestandsaufnahme: Produkt-/Technologiekompetenz',
-        'Branchen-/Prozessverstaendnis, Beratungs-/Vertriebsstaerke',
+        'Branchen-/Prozessverständnis, Beratungs-/Vertriebsstärke',
         'Projektmanagement-Skills',
-        'Identifiziere Entwicklungsfelder (Expertise-Luecken, Marktentwicklung)',
-        'Entwickle Kompensationsstrategien fuer Schwaechen (Partnerschaften, gezielte Verstaerkung)'
+        'Identifiziere Entwicklungsfelder (Expertise-Lücken, Marktentwicklung)',
+        'Entwickle Kompensationsstrategien für Schwächen (Partnerschaften, gezielte Verstärkung)'
       ]},
       {h:'Strategic Fit pruefen',items:[
-        'Wo koennen wir einzigartig punkten?',
+        'Wo können wir einzigartig punkten?',
         'Welche Referenzen haben wir?',
         'Wo brauchen wir Partner?'
       ],type:'question'},
@@ -299,25 +356,25 @@ const GUIDES = {
       {h:'Die 4 Key Player erkennen',items:[
         {t:'1. Entscheider (finaler Freigeber)',type:'example'},
         {t:'2. Anwender (operativer Nutzer)',type:'example'},
-        {t:'3. Experten (technische Pruefer / Waechter)',type:'example'},
-        {t:'4. Unterstuetzer / Coach (interne Fuersprecher)',type:'example'}
+        {t:'3. Experten (technische Prüfer / Wächter)',type:'example'},
+        {t:'4. Unterstützer / Coach (interne Fürsprecher)',type:'example'}
       ]},
       {h:'Rollen & Einfluss dokumentieren',items:[
         'Wer kann final entscheiden? Wer kann blockieren? Wer muss zustimmen?',
-        'Beobachte Interaktionsmuster: Wer spricht mit wem haeufig?',
+        'Beobachte Interaktionsmuster: Wer spricht mit wem häufig?',
         'Wessen Meinung wird besonders geschaetzt?',
         'Erkenne Netzwerke: Wo gibt es Spannungen?'
       ],type:'question'},
       {h:'Motivation verstehen',items:[
         {t:'Wachstumsorientiert: "mehr", "besser", "schneller" - Chancen und Potenziale aufzeigen, ROI-Szenarien',type:'example'},
-        {t:'Problemgetrieben: "muss geloest werden", "kritisch" - Konkrete Loesungen, schnelle Erfolge',type:'example'},
-        {t:'Zufrieden: "laeuft gut", "kein Bedarf" - Sanfte Veraenderungen, Risiken des Stillstands',type:'example'},
-        {t:'Ueberheblich: "wir sind die Besten" - Fakten sprechen lassen, Benchmarks',type:'example'}
+        {t:'Problemgetrieben: "muss gelöst werden", "kritisch" - Konkrete Lösungen, schnelle Erfolge',type:'example'},
+        {t:'Zufrieden: "läuft gut", "kein Bedarf" - Sanfte Veränderungen, Risiken des Stillstands',type:'example'},
+        {t:'Überheblich: "wir sind die Besten" - Fakten sprechen lassen, Benchmarks',type:'example'}
       ]},
       {h:'Warning Signals erkennen',items:[
         'Neue Personen in Key Positionen',
-        'Reorganisationen, unklare Entscheidungswege, widerspruechliche Aussagen',
-        'Verzoegerte Zahlungen, ploetzliche Budgetkuerzungen',
+        'Reorganisationen, unklare Entscheidungswege, widersprüchliche Aussagen',
+        'Verzögerte Zahlungen, ploetzliche Budgetkürzungen',
         'Verstaerkte Wettbewerbsgespraeche, neue Ausschreibungen, Benchmarking-Anfragen'
       ]}
     ]
@@ -328,15 +385,15 @@ const GUIDES = {
       {h:'Win-Win Matrix entwickeln',items:[
         'Win-Win definieren, Verlust-Szenarien vermeiden',
         'Messbare Kundenvorteile identifizieren',
-        'Profitables Projekt fuer uns und fuer den Kunden'
+        'Profitables Projekt für uns und für den Kunden'
       ]},
-      {h:'Verkaeufer-Perspektive',items:[
+      {h:'Verkäufer-Perspektive',items:[
         {t:'Nachhaltiger Umsatz und Gewinn, langfristige Kundenbeziehung',type:'example'},
         {t:'Positive Referenzen, Expertise-Aufbau',type:'example'},
         {t:'Planbare Einnahmen, Cross-/Up-Selling',type:'example'}
       ]},
-      {h:'Kaeufer-Perspektive',items:[
-        {t:'Optimale Loesung fuer Beduerfnisse',type:'example'},
+      {h:'Käufer-Perspektive',items:[
+        {t:'Optimale Lösung für Bedürfnisse',type:'example'},
         {t:'Messbare Verbesserung der Performance',type:'example'},
         {t:'Wettbewerbsvorteile, verlaesslicher Partner',type:'example'}
       ]},
@@ -347,8 +404,8 @@ const GUIDES = {
         {t:'Coach: Projekterfolg mitgestalten, interne Anerkennung',type:'example'}
       ]},
       {h:'Herausforderungen benennen',items:[
-        'Aktuelle Problemstellungen, ungenutzte Potentiale',
-        'Risiken bei Nicht-Handeln, Massnahmen konkretisieren',
+        'Aktuelle Problemstellungen, ungenutzte Potenziale',
+        'Risiken bei Nicht-Handeln, Maßnahmen konkretisieren',
         'Quick Wins identifizieren, langfristige Optimierung priorisieren'
       ],type:'question'}
     ]
@@ -356,16 +413,16 @@ const GUIDES = {
   i4: {
     title: 'I4 - Intensives Handeln',
     sections: [
-      {h:'Massnahmenkatalog entwickeln',items:[
-        'Sofort umsetzbare Aktionen identifizieren (z.B. Prozessanalyse, Potentialworkshop)',
+      {h:'Maßnahmenkatalog entwickeln',items:[
+        'Sofort umsetzbare Aktionen identifizieren (z.B. Prozessanalyse, Potenzialworkshop)',
         'Mittelfristige Verbesserungen planen (z.B. Pilotprojekt, Testphase)',
-        'Langfristige Entwicklungspotentiale aufzeigen (Digitalisierung, Technologie-Roadmap)'
+        'Langfristige Entwicklungspotenziale aufzeigen (Digitalisierung, Technologie-Roadmap)'
       ]},
       {h:'Impact-Matrix',items:[
         {t:'Hoher Impact / Leichte Umsetzung: Sofort starten',type:'example'},
         {t:'Hoher Impact / Schwere Umsetzung: Sorgfaeltig planen',type:'example'},
         {t:'Niedriger Impact / Leichte Umsetzung: Nach Quick Wins',type:'example'},
-        {t:'Niedriger Impact / Schwere Umsetzung: Zurueckstellen',type:'example'}
+        {t:'Niedriger Impact / Schwere Umsetzung: Zurückstellen',type:'example'}
       ]},
       {h:'Zeitplan strukturieren',items:[
         {t:'Quick Wins (1-3 Monate)',type:'example'},
@@ -374,9 +431,9 @@ const GUIDES = {
       ]},
       {h:'Implementation sichern',items:[
         'KPI-Dashboard implementieren',
-        'Regelmaessige Reviews etablieren',
+        'Regelmäßige Reviews etablieren',
         'Stakeholder-Feedback einholen',
-        'Fruehwarnsystem aufbauen',
+        'Frühwarnsystem aufbauen',
         'Best Practices dokumentieren'
       ]}
     ]
@@ -390,15 +447,15 @@ const GUIDES = {
         'Persoenliche Wins hervorheben (Projektleitung, Fachexpertise)'
       ]},
       {h:'Stakeholder-spezifische Anerkennung',items:[
-        {t:'Entscheider: Strategische Weitsicht bestaetigen, Business Impact hervorheben',type:'example'},
-        {t:'Anwender: Operative Verbesserungen wuerdigen, Teamleistung anerkennen',type:'example'},
-        {t:'Experte: Technische Exzellenz wertschaetzen, Expertise honorieren',type:'example'},
-        {t:'Coach: Vermittlungsrolle wuerdigen, interne Position staerken',type:'example'}
+        {t:'Entscheider: Strategische Weitsicht bestätigen, Business Impact hervorheben',type:'example'},
+        {t:'Anwender: Operative Verbesserungen würdigen, Teamleistung anerkennen',type:'example'},
+        {t:'Experte: Technische Exzellenz wertschätzen, Expertise honorieren',type:'example'},
+        {t:'Coach: Vermittlungsrolle würdigen, interne Position stärken',type:'example'}
       ]},
       {h:'Nachhaltige Partnerschaft',items:[
         'Gemeinsame Erfolgsgeschichte schreiben, Meilensteine dokumentieren',
         'Lernerfahrungen teilen, Best Practices austauschen',
-        'Vertrauenskultur staerken, regelmaessige Wertschaetzung etablieren',
+        'Vertrauenskultur stärken, regelmäßige Wertschätzung etablieren',
         'Gemeinsame Vision entwickeln'
       ]}
     ]
@@ -409,7 +466,7 @@ const GUIDES = {
       {h:'Purpose und Win-Win verbinden',items:[
         'Tieferen Sinn vermitteln: Zukunftssicherung, Generationenverantwortung',
         'Gesellschaftlichen Beitrag verdeutlichen: Ressourcenschonung, Arbeitsplaetze',
-        'Persoenliche Motivation staerken: Pionierrolle, Vorbildfunktion',
+        'Persoenliche Motivation stärken: Pionierrolle, Vorbildfunktion',
         'Business Impact quantifizieren: Kostenreduktion, Effizienzsteigerung'
       ]},
       {h:'Nachhaltige Transformation mit Sinn',items:[
@@ -427,6 +484,87 @@ const GUIDES = {
     ]
   }
 };
+
+// ====== TOOLTIP SYSTEM ======
+const TT = {
+  startTitle: {h:'Kundenprofil', t:'Erfasse die Grunddaten des strategischen Kunden oder Projekts. Name, Segment, Potential und Datum bilden die Basis für die gesamte DINAMIS-Analyse.'},
+  m1Title: {h:'M1 - Meine Stärken', t:'Definiere das ideale Kundenprofil, analysiere Deine Stärken und prüfe den Strategic Fit. Die Bewertung hilft Dir, die Passung objektiv einzuschätzen.'},
+  idealerKunde: {h:'Ideales Kundenprofil', t:'Was macht einen perfekten Kunden für Dich aus? Bewerte jedes Kriterium von -5 (sehr schlecht) bis +5 (ausgezeichnet). Der Score zeigt die Gesamtpassung.'},
+  meineStaerken: {h:'Meine Stärken', t:'Welche besonderen Kompetenzen und Vorteile bringst Du mit? Denke an Produktexpertise, Branchenwissen, Referenzen und Beziehungsqualität.'},
+  strategicFit: {h:'Strategic Fit', t:'Die 3 wichtigsten Gründe, warum Du und dieser Kunde ideal zusammenpassen. Wo kannst Du einzigartig punkten?'},
+  di2Title: {h:'DI2 - Dialog', t:'Identifiziere alle relevanten Key Player, verstehe ihre Motivation und erkenne frühzeitig Warning Signals. Der Dialog ist das Herzstück der strategischen Kundengewinnung.'},
+  keyPlayers: {h:'Key Player', t:'Identifiziere die 4 Hauptrollen: Entscheider (finaler Freigeber), Anwender (operativer Nutzer), Experte/Wächter (technischer Prüfer) und Coach/Unterstützer (interner Fürsprecher).'},
+  warningSignals: {h:'Warning Signals', t:'Frühwarnsignale erkennen: Neue Personen in Schlüsselpositionen, Reorganisationen, verzögerte Zahlungen, verstärkte Wettbewerbsgespräche.'},
+  n3Title: {h:'N3 - Nennen und Erkennen', t:'Entwickle eine Win-Win-Matrix, definiere Gewinnergebnisse für jeden Key Player und benenne Herausforderungen mit konkreten Maßnahmen.'},
+  winWinMatrix: {h:'Win-Win Matrix', t:'Welchen konkreten Gewinn hat der Kunde? Welchen Gewinn haben wir? Beide Seiten müssen profitieren für eine nachhaltige Partnerschaft.'},
+  gewinnergebnisse: {h:'Gewinnergebnisse', t:'Definiere für jeden Key Player ein individuelles Gewinnergebnis. Was motiviert den Entscheider? Was braucht der Anwender?'},
+  herausforderungen: {h:'Herausforderungen', t:'Welche konkreten Probleme und Hindernisse gibt es? Identifiziere Quick Wins und langfristige Optimierungspotenziale.'},
+  wettbewerb: {h:'Wettbewerb', t:'Wer sind die Wettbewerber? Worin unterscheidest Du Dich? Welche einzigartigen Vorteile kannst Du bieten?'},
+  i4Title: {h:'I4 - Intensives Handeln', t:'Aktiviere Deine Maßnahmen, priorisiere nach Impact und Umsetzbarkeit, und sichere die Implementation durch klare KPIs und regelmäßige Reviews.'},
+  massnahmen: {h:'Maßnahmen', t:'Welche konkreten Aktionen führst Du durch? Sofort umsetzbare Quick Wins, mittelfristige Verbesserungen und langfristige Transformationsprojekte.'},
+  massnahmenplan: {h:'Maßnahmenplan', t:'Priorisiere Deine Maßnahmen nach der Impact-Matrix: Hoher Impact + leichte Umsetzung zuerst, dann systematisch weiterentwickeln.'},
+  implementierung: {h:'Implementierungssicherung', t:'Wie stellst Du sicher, dass Maßnahmen umgesetzt werden? KPI-Dashboard, regelmäßige Reviews, Stakeholder-Feedback und Frühwarnsystem.'},
+  a5Title: {h:'A5 - Anerkennung', t:'Würdige messbare Erfolge, gib stakeholder-spezifische Anerkennung und entwickle eine nachhaltige Partnerschaft auf Augenhöhe.'},
+  ergebnisse: {h:'Ergebnisse & Würdigung', t:'Dokumentiere messbare Verbesserungen: Energieeinsparung, Kostensenkung, Prozessoptimierung. Hebe persönliche Wins hervor.'},
+  stakeholderAnerkennung: {h:'Stakeholder-Anerkennung', t:'Jeder Key Player verdient individuelle Anerkennung: Strategische Weitsicht beim Entscheider, operative Verbesserungen beim Anwender, technische Exzellenz beim Experten.'},
+  partnerschaft: {h:'Partnerschaft', t:'Schreibe eine gemeinsame Erfolgsgeschichte. Dokumentiere Meilensteine, teile Lernerfahrungen und stärke die Vertrauenskultur.'},
+  s6Title: {h:'S - Die Sinnfrage', t:'Verbinde Purpose mit Win-Win-Mehrwert. Definiere den tieferen Sinn der Zusammenarbeit und schaffe eine sinnstiftende Partnerschaft.'},
+  purpose: {h:'Purpose', t:'Warum tut Ihr das? Zukunftssicherung, Generationenverantwortung, gesellschaftlicher Beitrag. Verbinde den Purpose mit konkretem Business Impact.'},
+  transformation: {h:'Transformation', t:'Definiere das "Why" der Transformation: Zukunftsfähigkeit, Verantwortung. Erstelle eine sinnstiftende Roadmap mit bedeutungsvollen Meilensteinen.'},
+  sinnPartnerschaft: {h:'Sinnstiftende Partnerschaft', t:'Entwickle einen gemeinsamen Purpose mit geteilten Werten. Schaffe eine bedeutungsvolle Vision als Branchenpionier und Vordenker.'}
+};
+
+function ttToggle(el,e){
+  if(e) e.stopPropagation();
+  var b=el.querySelector('.tt-balloon');
+  if(!b) return;
+  var open=b.classList.contains('tt-show');
+  document.querySelectorAll('.tt-balloon.tt-show').forEach(function(x){x.classList.remove('tt-show')});
+  if(!open) b.classList.add('tt-show');
+}
+function ttOpen(el){if(!('ontouchstart' in window)){var b=el.querySelector('.tt-balloon');if(b)b.classList.add('tt-show')}}
+function ttClose(el){if(!('ontouchstart' in window)){var b=el.querySelector('.tt-balloon');if(b)b.classList.remove('tt-show')}}
+document.addEventListener('click',function(){document.querySelectorAll('.tt-balloon.tt-show').forEach(function(x){x.classList.remove('tt-show')})});
+function tt(text, title, pos) {
+  let cls = '';
+  if (pos === 'right') cls = ' tt-right';
+  else if (pos === 'left') cls = ' tt-left';
+  else if (pos === 'down') cls = ' tt-down';
+  else if (pos === 'down-right') cls = ' tt-down tt-right';
+  const titleHtml = title ? '<div class="tt-balloon-title">' + title + '</div>' : '';
+  return '<span class="tt-wrap" onclick="ttToggle(this,event)" onmouseenter="ttOpen(this)" onmouseleave="ttClose(this)"><span class="tt-icon">i</span><span class="tt-balloon' + cls + '">' + titleHtml + text + '</span></span>';
+}
+
+function ttFor(key, pos) {
+  const d = TT[key];
+  if (!d) return '';
+  return tt(d.t, d.h, pos);
+}
+
+// ====== AUTO-GROW ======
+function autoGrow(el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
+function initAutoGrow() {
+  setTimeout(function() {
+    document.querySelectorAll('.input-row textarea, textarea.auto-ta').forEach(function(ta) {
+      ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px';
+    });
+  }, 50);
+}
+
+// ====== WELCOME MODAL ======
+function closeWelcome() {
+  const modal = document.getElementById('welcome-modal');
+  if (modal) modal.classList.add('hidden');
+  const cb = document.getElementById('welcome-hide-check');
+  if (cb && cb.checked) {
+    try { localStorage.setItem('dinamis_strat_hide_welcome', '1'); } catch(e) {}
+  }
+}
+function showWelcome() {
+  try { if (localStorage.getItem('dinamis_strat_hide_welcome') === '1') return; } catch(e) {}
+  const modal = document.getElementById('welcome-modal');
+  if (modal) modal.classList.remove('hidden');
+}
 
 // ====== RENDER FUNCTIONS ======
 
@@ -502,14 +640,11 @@ function renderContent() {
 
 function renderStart() {
   return `
-    <div class="step-title">Kundenprofil</div>
+    <div class="step-title"><span class="tt-hdr-wrap">Kundenprofil${ttFor('startTitle','down')}</span></div>
     <div class="step-sub">Grunddaten des Kunden oder Projekts erfassen</div>
-    <div class="import-zone" onclick="document.getElementById('import-input').click()">
-      <p>Bestehende DINAMIS-Excel-Datei importieren (Drag & Drop oder Klick)</p>
-    </div>
     <div class="form-grid">
-      <div class="form-row"><label>Name / Projekt</label><input type="text" value="${esc(D.name)}" oninput="D.name=this.value;renderSidebar()"></div>
-      <div class="form-row"><label>Segment</label><input type="text" value="${esc(D.segment)}" oninput="D.segment=this.value"></div>
+      <div class="form-row"><label>Name / Projekt</label><textarea class="auto-ta" oninput="D.name=this.value;autoGrow(this);renderSidebar()" rows="1">${esc(D.name)}</textarea></div>
+      <div class="form-row"><label>Segment</label><textarea class="auto-ta" oninput="D.segment=this.value;autoGrow(this)" rows="1">${esc(D.segment)}</textarea></div>
     </div>
     <div class="form-grid-3">
       <div class="form-row"><label>Potential (EUR)</label><input type="number" value="${D.potential}" oninput="D.potential=this.value"></div>
@@ -527,8 +662,8 @@ function renderM1() {
   const pct = max > 0 ? Math.max(0, Math.min(100, ((sum + max) / (max * 2)) * 100)) : 50;
   const col = pct >= 60 ? 'var(--green)' : (pct >= 40 ? 'var(--yellow)' : 'var(--red)');
 
-  let html = `<div class="step-title">${ICO.m1} M1 - Meine Staerken</div>
-    <div class="step-sub">Idealer Kunde, eigene Staerken und Strategic Fit</div>`;
+  let html = `<div class="step-title"><span class="tt-hdr-wrap">${ICO.m1} M1 - Meine Stärken${ttFor('m1Title','down')}</span></div>
+    <div class="step-sub">Idealer Kunde, eigene Stärken und Strategic Fit</div>`;
 
   // Score
   html += `<div class="score-display">
@@ -538,39 +673,40 @@ function renderM1() {
   </div>`;
 
   // Ideales Kundenprofil
-  html += `<div class="section-div">Das ideale Kundenprofil (Bewertung -5 bis +5)</div>`;
+  html += `<div class="section-div">Das ideale Kundenprofil (Bewertung -5 bis +5)${ttFor('idealerKunde','down')}</div>`;
   D.m1.profil.forEach((p, i) => {
     const cls = p.r > 0 ? 'rr-pos' : (p.r < 0 ? 'rr-neg' : 'rr-zero');
     html += `<div class="rating-row">
       <span class="rr-num">${i+1}</span>
-      <input type="text" placeholder="Kriterium..." value="${esc(p.t)}" oninput="D.m1.profil[${i}].t=this.value;renderSidebar()">
+      <textarea placeholder="Kriterium..." oninput="D.m1.profil[${i}].t=this.value;autoGrow(this);renderSidebar()" rows="1" style="flex:1;background:transparent;border:none;color:var(--text);font-size:14px;padding:0;font-family:inherit;resize:none">${esc(p.t)}</textarea>
       <input type="range" min="-5" max="5" value="${p.r}" oninput="D.m1.profil[${i}].r=Number(this.value);this.nextElementSibling.textContent=(this.value>0?'+':'')+this.value;this.nextElementSibling.className='rr-val '+(this.value>0?'rr-pos':(this.value<0?'rr-neg':'rr-zero'));updateScore()">
       <span class="rr-val ${cls}">${p.r > 0 ? '+' : ''}${p.r}</span>
     </div>`;
   });
 
-  // Meine Staerken
-  html += `<div class="section-div">Meine Staerken (min. 6)</div>`;
+  // Meine Stärken
+  html += `<div class="section-div">Meine Stärken (min. 6)${ttFor('meineStaerken','down')}</div>`;
   D.m1.staerken.forEach((s, i) => {
     html += `<div class="input-row">
       <span class="ir-num">${i+1}</span>
-      <input type="text" placeholder="Staerke..." value="${esc(s)}" oninput="D.m1.staerken[${i}]=this.value;renderSidebar()">
+      <textarea placeholder="Stärke..." oninput="D.m1.staerken[${i}]=this.value;autoGrow(this);renderSidebar()" rows="1">${esc(s)}</textarea>
     </div>`;
   });
 
   // Strategic Fit
-  html += `<div class="section-div">Strategic Fit (3 Hauptgruende)</div>`;
+  html += `<div class="section-div">Strategic Fit (3 Hauptgründe)${ttFor('strategicFit','down')}</div>`;
   D.m1.fit.forEach((f, i) => {
     html += `<div class="input-row">
       <span class="ir-num">${i+1}</span>
-      <input type="text" placeholder="Grund fuer gute Passung..." value="${esc(f)}" oninput="D.m1.fit[${i}]=this.value">
+      <textarea placeholder="Grund für gute Passung..." oninput="D.m1.fit[${i}]=this.value;autoGrow(this)" rows="1">${esc(f)}</textarea>
     </div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
-    <button class="btn btn-outline" onclick="goStep('start')">&larr; Zurueck</button>
+    <button class="btn btn-outline" onclick="goStep('start')">&larr; Zurück</button>
     <button class="btn" onclick="goStep('di2')">Weiter zu DI2 &rarr;</button>
   </div>`;
+  initAutoGrow();
   return html;
 }
 
@@ -586,149 +722,154 @@ function updateScore() {
 }
 
 function renderDI2() {
-  const roles = ['Entscheider (finaler Freigeber)','Anwender (operativer Nutzer)','Experte / Waechter (technische Pruefer)','Coach / Unterstuetzer (interne Fuersprecher)','Weiterer Key Player','Weiterer Key Player','Weiterer Key Player'];
-  let html = `<div class="step-title">${ICO.di2} DI2 - Dialog</div>
+  const roles = ['Entscheider (finaler Freigeber)','Anwender (operativer Nutzer)','Experte / Wächter (technischer Prüfer)','Coach / Unterstützer (interner Fürsprecher)','Weiterer Key Player','Weiterer Key Player','Weiterer Key Player'];
+  let html = `<div class="step-title"><span class="tt-hdr-wrap">${ICO.di2} DI2 - Dialog${ttFor('di2Title','down')}</span></div>
     <div class="step-sub">Key Player identifizieren, Motivation verstehen, Warning Signals erkennen</div>`;
 
-  html += `<div class="section-div">Key Player & Motivation</div>`;
+  html += `<div class="section-div">Key Player & Motivation${ttFor('keyPlayers','down')}</div>`;
   D.di2.keyPlayers.forEach((kp, i) => {
     html += `<div class="kp-entry">
       <div class="kp-type">${roles[i]}</div>
       <div class="kp-head">
-        <input type="text" placeholder="Name / Rolle" value="${esc(kp.name)}" oninput="D.di2.keyPlayers[${i}].name=this.value;renderSidebar()">
+        <textarea placeholder="Name / Rolle" oninput="D.di2.keyPlayers[${i}].name=this.value;autoGrow(this);renderSidebar()" rows="1" style="flex:1;background:transparent;border:1px solid var(--border2);border-radius:4px;padding:6px 10px;color:var(--text);font-size:14px;font-family:inherit;resize:none">${esc(kp.name)}</textarea>
       </div>
       <textarea placeholder="Motivation - Was treibt diese Person an?" oninput="D.di2.keyPlayers[${i}].motivation=this.value">${esc(kp.motivation)}</textarea>
     </div>`;
   });
 
-  html += `<div class="section-div">Warning Signals</div>`;
+  html += `<div class="section-div">Warning Signals${ttFor('warningSignals','down')}</div>`;
   D.di2.warnings.forEach((w, i) => {
     html += `<div class="input-row" style="border-left:3px solid var(--red)">
       <span class="ir-num">${i+1}</span>
-      <input type="text" placeholder="Warning Signal..." value="${esc(w)}" oninput="D.di2.warnings[${i}]=this.value">
+      <textarea placeholder="Warning Signal..." oninput="D.di2.warnings[${i}]=this.value;autoGrow(this)" rows="1">${esc(w)}</textarea>
     </div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
-    <button class="btn btn-outline" onclick="goStep('m1')">&larr; Zurueck</button>
+    <button class="btn btn-outline" onclick="goStep('m1')">&larr; Zurück</button>
     <button class="btn" onclick="goStep('n3')">Weiter zu N3 &rarr;</button>
   </div>`;
+  initAutoGrow();
   return html;
 }
 
 function renderN3() {
-  let html = `<div class="step-title">${ICO.n3} N3 - Nennen und Erkennen</div>
+  let html = `<div class="step-title"><span class="tt-hdr-wrap">${ICO.n3} N3 - Nennen und Erkennen${ttFor('n3Title','down')}</span></div>
     <div class="step-sub">Win-Win Matrix, Gewinnergebnisse, Herausforderungen</div>`;
 
-  html += `<div class="section-div">Win-Win Matrix</div>`;
+  html += `<div class="section-div">Win-Win Matrix${ttFor('winWinMatrix','down')}</div>`;
   html += `<div class="ww-grid">
     <div class="ww-col kunde"><h4>Win Kunde</h4>`;
   D.n3.winKunde.forEach((w, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Kundengewinn..." value="${esc(w)}" oninput="D.n3.winKunde[${i}]=this.value;renderSidebar()"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Kundengewinn..." oninput="D.n3.winKunde[${i}]=this.value;autoGrow(this);renderSidebar()" rows="1">${esc(w)}</textarea></div>`;
   });
   html += `</div><div class="ww-col wir"><h4>Win Wir</h4>`;
   D.n3.winWir.forEach((w, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Unser Gewinn..." value="${esc(w)}" oninput="D.n3.winWir[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Unser Gewinn..." oninput="D.n3.winWir[${i}]=this.value;autoGrow(this)" rows="1">${esc(w)}</textarea></div>`;
   });
   html += `</div></div>`;
 
-  html += `<div class="section-div">Gewinnergebnisse pro Key Player</div>`;
+  html += `<div class="section-div">Gewinnergebnisse pro Key Player${ttFor('gewinnergebnisse','down')}</div>`;
   D.n3.winResults.forEach((w, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Gewinnergebnis Key Player ${i+1}..." value="${esc(w)}" oninput="D.n3.winResults[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Gewinnergebnis Key Player ${i+1}..." oninput="D.n3.winResults[${i}]=this.value;autoGrow(this)" rows="1">${esc(w)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Herausforderungen & Massnahmen</div>`;
+  html += `<div class="section-div">Herausforderungen & Maßnahmen${ttFor('herausforderungen','down')}</div>`;
   D.n3.challenges.forEach((c, i) => {
-    html += `<div class="input-row" style="border-left:3px solid var(--orange)"><span class="ir-num">${i+1}</span><input type="text" placeholder="Herausforderung / Massnahme..." value="${esc(c)}" oninput="D.n3.challenges[${i}]=this.value"></div>`;
+    html += `<div class="input-row" style="border-left:3px solid var(--orange)"><span class="ir-num">${i+1}</span><textarea placeholder="Herausforderung / Maßnahme..." oninput="D.n3.challenges[${i}]=this.value;autoGrow(this)" rows="1">${esc(c)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Wettbewerb</div>`;
+  html += `<div class="section-div">Wettbewerb${ttFor('wettbewerb','down')}</div>`;
   D.n3.wettbewerb.forEach((w, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Wettbewerber / Differenzierung..." value="${esc(w)}" oninput="D.n3.wettbewerb[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Wettbewerber / Differenzierung..." oninput="D.n3.wettbewerb[${i}]=this.value;autoGrow(this)" rows="1">${esc(w)}</textarea></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
-    <button class="btn btn-outline" onclick="goStep('di2')">&larr; Zurueck</button>
+    <button class="btn btn-outline" onclick="goStep('di2')">&larr; Zurück</button>
     <button class="btn" onclick="goStep('i4')">Weiter zu I4 &rarr;</button>
   </div>`;
+  initAutoGrow();
   return html;
 }
 
 function renderI4() {
-  let html = `<div class="step-title">${ICO.i4} I4 - Intensives Handeln</div>
-    <div class="step-sub">Massnahmen aktivieren, priorisieren und Implementation sichern</div>`;
+  let html = `<div class="step-title"><span class="tt-hdr-wrap">${ICO.i4} I4 - Intensives Handeln${ttFor('i4Title','down')}</span></div>
+    <div class="step-sub">Maßnahmen aktivieren, priorisieren und Implementation sichern</div>`;
 
-  html += `<div class="section-div">Massnahmen</div>`;
+  html += `<div class="section-div">Maßnahmen${ttFor('massnahmen','down')}</div>`;
   D.i4.massnahmen.forEach((m, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Massnahme..." value="${esc(m)}" oninput="D.i4.massnahmen[${i}]=this.value;renderSidebar()"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Maßnahme..." oninput="D.i4.massnahmen[${i}]=this.value;autoGrow(this);renderSidebar()" rows="1">${esc(m)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Priorisierter Massnahmenplan</div>`;
+  html += `<div class="section-div">Priorisierter Maßnahmenplan${ttFor('massnahmenplan','down')}</div>`;
   D.i4.plan.forEach((p, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Priorisierte Massnahme..." value="${esc(p)}" oninput="D.i4.plan[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Priorisierte Maßnahme..." oninput="D.i4.plan[${i}]=this.value;autoGrow(this)" rows="1">${esc(p)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Implementierungssicherung</div>`;
+  html += `<div class="section-div">Implementierungssicherung${ttFor('implementierung','down')}</div>`;
   D.i4.implementation.forEach((m, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Wie sicherst Du die Implementierung?" value="${esc(m)}" oninput="D.i4.implementation[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Wie sicherst Du die Implementierung?" oninput="D.i4.implementation[${i}]=this.value;autoGrow(this)" rows="1">${esc(m)}</textarea></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
-    <button class="btn btn-outline" onclick="goStep('n3')">&larr; Zurueck</button>
+    <button class="btn btn-outline" onclick="goStep('n3')">&larr; Zurück</button>
     <button class="btn" onclick="goStep('a5')">Weiter zu A5 &rarr;</button>
   </div>`;
+  initAutoGrow();
   return html;
 }
 
 function renderA5() {
-  let html = `<div class="step-title">${ICO.a5} A5 - Anerkennung</div>
-    <div class="step-sub">Win-Win Erfolge wuerdigen und nachhaltige Partnerschaft entwickeln</div>`;
+  let html = `<div class="step-title"><span class="tt-hdr-wrap">${ICO.a5} A5 - Anerkennung${ttFor('a5Title','down')}</span></div>
+    <div class="step-sub">Win-Win Erfolge würdigen und nachhaltige Partnerschaft entwickeln</div>`;
 
-  html += `<div class="section-div">Messbare Verbesserungen & individuelle Wuerdigung</div>`;
+  html += `<div class="section-div">Messbare Verbesserungen & individuelle Würdigung${ttFor('ergebnisse','down')}</div>`;
   D.a5.results.forEach((r, i) => {
-    html += `<div class="input-row" style="border-left:3px solid var(--green)"><span class="ir-num">${i+1}</span><input type="text" placeholder="Ergebnis / Wuerdigung..." value="${esc(r)}" oninput="D.a5.results[${i}]=this.value;renderSidebar()"></div>`;
+    html += `<div class="input-row" style="border-left:3px solid var(--green)"><span class="ir-num">${i+1}</span><textarea placeholder="Ergebnis / Würdigung..." oninput="D.a5.results[${i}]=this.value;autoGrow(this);renderSidebar()" rows="1">${esc(r)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Stakeholder-spezifische Anerkennung</div>`;
+  html += `<div class="section-div">Stakeholder-spezifische Anerkennung${ttFor('stakeholderAnerkennung','down')}</div>`;
   D.a5.stakeholder.forEach((s, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Anerkennung fuer Stakeholder..." value="${esc(s)}" oninput="D.a5.stakeholder[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Anerkennung für Stakeholder..." oninput="D.a5.stakeholder[${i}]=this.value;autoGrow(this)" rows="1">${esc(s)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Nachhaltige Partnerschaft</div>`;
+  html += `<div class="section-div">Nachhaltige Partnerschaft${ttFor('partnerschaft','down')}</div>`;
   D.a5.partnerschaft.forEach((p, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Partnerschaftsentwicklung..." value="${esc(p)}" oninput="D.a5.partnerschaft[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Partnerschaftsentwicklung..." oninput="D.a5.partnerschaft[${i}]=this.value;autoGrow(this)" rows="1">${esc(p)}</textarea></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
-    <button class="btn btn-outline" onclick="goStep('i4')">&larr; Zurueck</button>
+    <button class="btn btn-outline" onclick="goStep('i4')">&larr; Zurück</button>
     <button class="btn" onclick="goStep('s6')">Weiter zu S &rarr;</button>
   </div>`;
+  initAutoGrow();
   return html;
 }
 
 function renderS6() {
-  let html = `<div class="step-title">${ICO.s6} S - Die Sinnfrage</div>
+  let html = `<div class="step-title"><span class="tt-hdr-wrap">${ICO.s6} S - Die Sinnfrage${ttFor('s6Title','down')}</span></div>
     <div class="step-sub">Purpose und Win-Win Mehrwert verbinden</div>`;
 
-  html += `<div class="section-div">Purpose mit Win-Win verbinden</div>`;
+  html += `<div class="section-div">Purpose mit Win-Win verbinden${ttFor('purpose','down')}</div>`;
   D.s6.purpose.forEach((p, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Purpose-Verbindung..." value="${esc(p)}" oninput="D.s6.purpose[${i}]=this.value;renderSidebar()"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Purpose-Verbindung..." oninput="D.s6.purpose[${i}]=this.value;autoGrow(this);renderSidebar()" rows="1">${esc(p)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Nachhaltige Transformation</div>`;
+  html += `<div class="section-div">Nachhaltige Transformation${ttFor('transformation','down')}</div>`;
   D.s6.transformation.forEach((t, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Transformationsperspektive..." value="${esc(t)}" oninput="D.s6.transformation[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Transformationsperspektive..." oninput="D.s6.transformation[${i}]=this.value;autoGrow(this)" rows="1">${esc(t)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Sinnstiftende Partnerschaft</div>`;
+  html += `<div class="section-div">Sinnstiftende Partnerschaft${ttFor('sinnPartnerschaft','down')}</div>`;
   D.s6.sinnPartnerschaft.forEach((s, i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Gemeinsamer Purpose..." value="${esc(s)}" oninput="D.s6.sinnPartnerschaft[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Gemeinsamer Purpose..." oninput="D.s6.sinnPartnerschaft[${i}]=this.value;autoGrow(this)" rows="1">${esc(s)}</textarea></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
-    <button class="btn btn-outline" onclick="goStep('a5')">&larr; Zurueck</button>
+    <button class="btn btn-outline" onclick="goStep('a5')">&larr; Zurück</button>
     <button class="btn btn-green" onclick="exportExcel()">Als Excel exportieren</button>
   </div>`;
+  initAutoGrow();
   return html;
 }
 
@@ -917,19 +1058,19 @@ function exportExcel() {
   wwRow2[16] = D.n3.winWir[3] || null;
   mainData.push(wwRow2);
 
-  // Staerken header row 20
+  // Stärken header row 20
   const r20 = new Array(21).fill(null);
   r20[2] = 'Meine St\u00e4rken'; r20[9] = 'Warning Signal';
   mainData.push(r20);
 
-  // Rows 21-26: Staerken + Warnings
+  // Rows 21-26: Stärken + Warnings
   for (let i = 0; i < 6; i++) {
     const row = new Array(21).fill(null);
     row[1] = i + 1;
     row[2] = D.m1.staerken[i] || null;
     row[8] = i + 1;
     row[9] = D.di2.warnings[i] || null;
-    if (i === 0) row[16] = 'Herausforderungen und Massnahmen spezifiziieren';
+    if (i === 0) row[16] = 'Herausforderungen und Maßnahmen spezifiziieren';
     else if (i <= 5) row[16] = D.n3.challenges[i-1] || null;
     mainData.push(row);
   }
@@ -964,8 +1105,8 @@ function exportExcel() {
   // Header row for lower section
   const lhRow = new Array(21).fill(null);
   lhRow[2] = 'Purpose und Win Win Mehrwert verbinden';
-  lhRow[9] = 'Massnahmen';
-  lhRow[12] = 'Bester Massnahmenplan entwickeln';
+  lhRow[9] = 'Maßnahmen';
+  lhRow[12] = 'Bester Maßnahmenplan entwickeln';
   lhRow[16] = 'Win Win W\u00fcrdigen';
   mainData.push(lhRow);
 
@@ -1015,16 +1156,11 @@ function openHTMLAusgabe() {
     results: D.a5.results, stakeholder: D.a5.stakeholder, partnerschaft: D.a5.partnerschaft,
     purpose: D.s6.purpose, transformation: D.s6.transformation, sinnPartnerschaft: D.s6.sinnPartnerschaft
   };
-  // Open Ausgabe with data in hash
   const json = encodeURIComponent(JSON.stringify(data));
-  // Use link click instead of window.open to avoid popup blockers on iOS
-  const a = document.createElement('a');
-  a.href = 'ausgabe.html#' + json;
-  a.target = '_blank';
-  a.rel = 'noopener';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  try { localStorage.setItem('dinamis_ausgabe_data', json); } catch(e) {}
+  const url = 'ausgabe.html#' + json;
+  const w = window.open(url, '_blank');
+  if (!w) { window.location.href = url; }
 }
 
 // ====== INIT ======
@@ -1049,6 +1185,7 @@ function init() {
   renderSidebar();
   renderContent();
   renderGuide();
+  showWelcome();
 }
 
 init();

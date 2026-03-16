@@ -213,7 +213,7 @@ function renderPage1() {
         <div class="sec-sub ph-di2-light">DI 2</div>
         <div class="col-hdr clr-gray" style="display:flex"><span style="flex:1">Key Player Name / Rolle</span><span style="flex:1;border-left:1px solid #c4b5d9;padding-left:6px">Die Motivation</span></div>
         <table class="dtable"><tbody>
-          ${kp.map((k,i) => `<tr><td style="width:14px;color:#a78bfa;font-weight:700">${i+1}</td><td>${esc(k.name||k)}</td><td>${esc(k.motivation||'')}</td></tr>`).join('')}
+          ${kp.map((k,i) => `<tr><td style="width:14px;color:#a78bfa;font-weight:700">${i+1}</td><td>${esc(typeof k==='object'?k.name||'':k)}</td><td>${esc(typeof k==='object'?k.motivation||'':'')}</td></tr>`).join('')}
         </tbody></table>
         <div class="col-hdr clr-gray">Warning Signals</div>
         ${nlist(wa, 7, '#6d28d9')}
@@ -347,7 +347,7 @@ function renderPageDI2() {
         <div class="guide">Wer kann entscheiden? Wer kann blockieren?</div>
         <div class="guide">Verstehen Sie informelle Beziehungen</div>
         <div class="col-hdr ph-di2-light" style="margin-top:4px">Key Player und Rolle</div>
-        ${nlist(kp.map(k=>k.name||k), 7, '#6d28d9')}
+        ${nlist(kp.map(k=>typeof k==='object'?k.name||'':k), 7, '#6d28d9')}
       </div>
       <div class="col">
         <div class="sec-hdr ph-di2">${ICO.di2} Motivation verstehen</div>
