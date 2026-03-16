@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>DINAMIS - Taktische Kundengewinnung</title>
+<title>DINAMIS - Kundengewinnung</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #021a14 0%, #0a2e22 50%, #134e3a 100%); color: #f0fdf4; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
@@ -16,13 +16,23 @@ h1 { font-size: 28px; font-weight: 700; letter-spacing: 2px; margin-bottom: 4px;
 h1 span { color: #34d399; }
 .subtitle { font-size: 14px; color: #86efac; margin-bottom: 40px; letter-spacing: 0.5px; }
 .cards { display: flex; flex-direction: column; gap: 16px; }
-.card { display: block; background: rgba(255,255,255,0.06); border: 1px solid rgba(52,211,153,0.2); border-radius: 12px; padding: 24px 20px; text-decoration: none; color: #f0fdf4; transition: all 0.3s; }
-.card:hover { background: rgba(52,211,153,0.12); border-color: #34d399; transform: translateY(-2px); }
-.card h2 { font-size: 18px; font-weight: 600; margin-bottom: 6px; color: #6ee7b7; }
-.card p { font-size: 13px; color: #86efac; line-height: 1.5; }
+.card { display: block; border-radius: 12px; padding: 24px 20px; text-decoration: none; color: #f0fdf4; transition: all 0.3s; }
+.card:hover { transform: translateY(-2px); }
+.card h2 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+.card p { font-size: 13px; line-height: 1.5; }
+.card-strat { background: rgba(124,58,237,0.12); border: 1px solid rgba(167,139,250,0.25); }
+.card-strat:hover { background: rgba(124,58,237,0.2); border-color: #a78bfa; }
+.card-strat h2 { color: #c4b5fd; }
+.card-strat p { color: #a5b4fc; }
+.card-takt { background: rgba(16,185,129,0.1); border: 1px solid rgba(52,211,153,0.25); }
+.card-takt:hover { background: rgba(16,185,129,0.18); border-color: #34d399; }
+.card-takt h2 { color: #6ee7b7; }
+.card-takt p { color: #86efac; }
+.divider { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+.divider span { font-size: 11px; color: #4aba80; text-transform: uppercase; letter-spacing: 1px; }
+.divider::before,.divider::after { content: ''; flex: 1; height: 1px; background: rgba(52,211,153,0.2); }
 .footer { margin-top: 48px; text-align: center; }
 .footer p { font-size: 11px; color: #4aba80; }
-.footer a { color: #34d399; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -37,24 +47,24 @@ h1 span { color: #34d399; }
       </defs>
       <circle cx="60" cy="60" r="56" fill="none" stroke="url(#g1)" stroke-width="3"/>
       <text x="60" y="50" text-anchor="middle" fill="#34d399" font-family="Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="3">DINAMIS</text>
-      <text x="60" y="68" text-anchor="middle" fill="#6ee7b7" font-family="Arial, sans-serif" font-size="8" letter-spacing="1">TAKTISCHE</text>
-      <text x="60" y="80" text-anchor="middle" fill="#6ee7b7" font-family="Arial, sans-serif" font-size="8" letter-spacing="1">KUNDENGEWINNUNG</text>
+      <text x="60" y="70" text-anchor="middle" fill="#6ee7b7" font-family="Arial, sans-serif" font-size="8" letter-spacing="1">KUNDENGEWINNUNG</text>
     </svg>
   </div>
   <h1>DINAMIS<span>&reg;</span></h1>
-  <p class="subtitle">Taktische Kundengewinnung</p>
+  <p class="subtitle">Kundengewinnung mit System</p>
   <div class="cards">
-    <a href="taktisch-eingabe.html" class="card">
-      <h2>Eingabe</h2>
-      <p>Kundendaten erfassen, bearbeiten und als Excel exportieren. Geleitete Eingabe durch alle 6 DINAMIS-Phasen.</p>
+    <a href="eingabe.html" class="card card-strat">
+      <h2>Strategische Kundengewinnung</h2>
+      <p>Langfristige Kundenentwicklung und strategische Positionierung. 6 DINAMIS-Phasen auf strategischer Ebene.</p>
     </a>
-    <a href="taktisch-ausgabe.html" class="card">
-      <h2>Ausgabe</h2>
-      <p>Professionelle Kundenanalyse als druckbares A4-Dokument. Excel-Import oder direkte Dateneingabe.</p>
+    <div class="divider"><span>oder</span></div>
+    <a href="taktisch-eingabe.html" class="card card-takt">
+      <h2>Taktische Kundengewinnung</h2>
+      <p>Operative Verkaufsvorbereitung und taktische Kundenanalyse. Geleitete Eingabe durch alle 6 DINAMIS-Phasen.</p>
     </a>
   </div>
   <div class="footer">
-    <p>&copy; 2026 DINAMIS&reg; Taktische Kundengewinnung</p>
+    <p>&copy; 2026 DINAMIS&reg; Kundengewinnung</p>
   </div>
 </div>
 </body>
