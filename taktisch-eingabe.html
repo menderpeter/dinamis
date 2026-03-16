@@ -54,13 +54,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .form-row input,.form-row textarea,.form-row select{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:6px;padding:10px 12px;color:var(--text);font-size:14px;font-family:inherit;transition:border-color .2s}
 .form-row input:focus,.form-row textarea:focus{outline:none;border-color:var(--accent)}
 .form-row textarea{resize:vertical;min-height:60px}
+.form-row textarea.auto-ta{resize:none;overflow:hidden;min-height:unset;padding:10px 12px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 
 .input-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;background:var(--surface);border-radius:8px;padding:10px 14px;border:1px solid var(--border2)}
 .input-row .ir-num{font-size:12px;color:var(--text3);width:20px;flex-shrink:0;padding-top:2px}
-.input-row input,.input-row textarea{flex:1;background:transparent;border:none;color:var(--text);font-size:14px;padding:0;font-family:inherit;resize:none}
-.input-row input:focus,.input-row textarea:focus{outline:none}
+.input-row textarea{flex:1;background:transparent;border:none;color:var(--text);font-size:14px;padding:0;font-family:inherit;resize:none;overflow:hidden;min-height:20px;line-height:1.4}
+.input-row textarea:focus{outline:none}
+.input-row textarea::placeholder{color:var(--text3);opacity:.6}
 
 .ww-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .ww-col h4{font-size:13px;font-weight:600;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border2)}
@@ -106,6 +108,49 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .nav-item.active .phase-icon{filter:brightness(1) saturate(1)}
 .step-title .phase-icon{width:28px;height:28px;vertical-align:middle;margin-right:6px}
 .guide-title .phase-icon{width:22px;height:22px;vertical-align:middle;margin-right:6px}
+
+/* ====== BALLOON TOOLTIPS ====== */
+.tt-wrap{position:relative;display:inline-flex;align-items:center;margin-left:6px;vertical-align:middle}
+.tt-icon{width:18px;height:18px;border-radius:50%;background:rgba(16,185,129,.2);border:1px solid rgba(52,211,153,.4);color:var(--accent2);font-size:11px;font-weight:700;font-style:italic;display:inline-flex;align-items:center;justify-content:center;cursor:help;transition:all .25s;flex-shrink:0;line-height:1;font-family:Georgia,serif;user-select:none}
+.tt-icon:hover{background:rgba(52,211,153,.35);border-color:var(--accent2);transform:scale(1.15)}
+.tt-balloon{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%) scale(0.9);opacity:0;pointer-events:none;background:var(--surface2);border:1px solid var(--accent);border-radius:8px;padding:10px 14px;font-size:12px;font-weight:400;font-style:normal;color:var(--text);line-height:1.5;width:260px;max-width:80vw;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:200;transition:all .25s cubic-bezier(.175,.885,.32,1.275)}
+.tt-balloon::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:8px solid transparent;border-top-color:var(--accent)}
+.tt-balloon::before{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:9px solid transparent;border-top-color:var(--surface2);margin-top:-1px;z-index:1}
+.tt-wrap:hover .tt-balloon,.tt-balloon.tt-show{opacity:1;transform:translateX(-50%) scale(1);pointer-events:auto}
+.tt-balloon.tt-right{left:auto;right:-8px;transform:translateX(0) scale(0.9)}
+.tt-balloon.tt-right.tt-show,.tt-wrap:hover .tt-balloon.tt-right{transform:translateX(0) scale(1)}
+.tt-balloon.tt-right::after,.tt-balloon.tt-right::before{left:auto;right:16px;transform:none}
+.tt-balloon.tt-left{left:-8px;right:auto;transform:translateX(0) scale(0.9)}
+.tt-balloon.tt-left.tt-show,.tt-wrap:hover .tt-balloon.tt-left{transform:translateX(0) scale(1)}
+.tt-balloon.tt-left::after,.tt-balloon.tt-left::before{left:16px;right:auto;transform:none}
+.tt-balloon-title{font-size:11px;font-weight:600;color:var(--accent2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.tt-hdr-wrap{display:inline-flex;align-items:center}
+/* Balloon nach UNTEN (fuer Header-Bereich) */
+.tt-balloon.tt-down{bottom:auto;top:calc(100% + 12px)}
+.tt-balloon.tt-down::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--accent)}
+.tt-balloon.tt-down::before{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--surface2);margin-top:0;margin-bottom:-1px}
+@media(max-width:768px){.tt-balloon{width:220px;font-size:11px;padding:8px 10px}}
+
+/* ====== WILLKOMMENS-MODAL ====== */
+.welcome-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
+.welcome-overlay.hidden{display:none}
+.welcome-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:520px;width:100%;padding:32px;box-shadow:0 24px 64px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
+.welcome-badge{display:inline-block;background:rgba(16,185,129,.15);color:var(--accent2);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:4px 14px;border-radius:20px;border:1px solid rgba(52,211,153,.3);margin-bottom:16px}
+.welcome-box h2{font-size:22px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.welcome-box h2 span{color:var(--accent2)}
+.welcome-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:24px}
+.welcome-phases{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.welcome-phase{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.welcome-phase-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);flex-shrink:0}
+.welcome-phase-id{font-size:12px;font-weight:700;color:var(--accent2);min-width:26px}
+.welcome-phase-name{font-size:12px;color:var(--text2)}
+.welcome-hint{font-size:12px;color:var(--text3);line-height:1.5;margin-bottom:20px;padding:10px 14px;background:rgba(16,185,129,.05);border-radius:6px;border-left:3px solid var(--accent)}
+.welcome-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.welcome-check{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);cursor:pointer}
+.welcome-check input{accent-color:var(--accent)}
+.welcome-start{background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.welcome-start:hover{background:var(--accent2);transform:translateY(-1px)}
+@media(max-width:480px){.welcome-phases{grid-template-columns:1fr}.welcome-box{padding:20px}}
 </style>
 </head>
 <body>
@@ -113,11 +158,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="header">
   <h1>DINAMIS<span>.</span> Taktische Eingabe</h1>
   <div class="header-actions">
-    <button class="btn btn-outline btn-sm" onclick="document.getElementById('import-input').click()">Excel importieren</button>
+    <span class="tt-hdr-wrap"><button class="btn btn-outline btn-sm" onclick="document.getElementById('import-input').click()">Excel importieren</button><span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">Excel Import</div>Importieren Sie eine bestehende DINAMIS Taktische Excel-Datei. Alle Daten werden automatisch in die Felder übernommen.</span></span></span>
     <input type="file" id="import-input" accept=".xlsx,.xls" style="display:none" onchange="importExcel(this.files[0])">
-    <button class="btn btn-outline btn-sm" onclick="saveLocal()">Zwischenspeichern</button>
-    <button class="btn btn-sm" style="background:var(--orange)" onclick="openHTMLAusgabe()">HTML Ausgabe</button>
-    <button class="btn btn-green btn-sm" onclick="exportExcel()">Als Excel exportieren</button>
+    <span class="tt-hdr-wrap"><button class="btn btn-outline btn-sm" onclick="saveLocal()">Zwischenspeichern</button><span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">Zwischenspeichern</div>Speichert den aktuellen Stand als JSON-Datei. So können Sie später weitermachen, wo Sie aufgehört haben.</span></span></span>
+    <span class="tt-hdr-wrap"><button class="btn btn-sm" style="background:var(--orange)" onclick="openHTMLAusgabe()">HTML Ausgabe</button><span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">HTML Ausgabe</div>Öffnet eine druckbare A4-Ansicht aller Daten in einem neuen Tab. Ideal für Meetings.</span></span></span>
+    <span class="tt-hdr-wrap"><button class="btn btn-green btn-sm" onclick="exportExcel()">Als Excel exportieren</button><span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">Excel Export</div>Exportiert alle Daten als Excel-Datei, kompatibel mit der DINAMIS Taktischen Vorlage.</span></span></span>
   </div>
 </div>
 
@@ -132,6 +177,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <div class="guide-overlay" id="guide-overlay" onclick="toggleGuide()"></div>
 <button class="btn guide-btn" onclick="toggleGuide()">Anleitung</button>
+
+<!-- Willkommens-Modal -->
+<div class="welcome-overlay" id="welcome-modal">
+  <div class="welcome-box">
+    <div class="welcome-badge">Willkommen</div>
+    <h2><span>DINAMIS&reg;</span> Taktische Kundengewinnung 2.0</h2>
+    <p class="welcome-desc">Dieses interaktive Workbook begleitet Sie durch die 6 Phasen der taktischen Kundengewinnung. Arbeiten Sie jede Phase systematisch durch, um Ihre Verkaufskompetenz zu maximieren.</p>
+    <div class="welcome-phases">
+      <div class="welcome-phase"><span class="welcome-phase-dot"></span><span class="welcome-phase-id">M1</span><span class="welcome-phase-name">Meine St&auml;rken</span></div>
+      <div class="welcome-phase"><span class="welcome-phase-dot"></span><span class="welcome-phase-id">DI2</span><span class="welcome-phase-name">Dialog</span></div>
+      <div class="welcome-phase"><span class="welcome-phase-dot"></span><span class="welcome-phase-id">I3</span><span class="welcome-phase-name">Intensives Handeln</span></div>
+      <div class="welcome-phase"><span class="welcome-phase-dot"></span><span class="welcome-phase-id">N4</span><span class="welcome-phase-name">Nennen</span></div>
+      <div class="welcome-phase"><span class="welcome-phase-dot"></span><span class="welcome-phase-id">A5</span><span class="welcome-phase-name">Anerkennung</span></div>
+      <div class="welcome-phase"><span class="welcome-phase-dot"></span><span class="welcome-phase-id">S</span><span class="welcome-phase-name">Sinnfrage</span></div>
+    </div>
+    <div class="welcome-hint">Nutzen Sie die Sidebar-Navigation links, um zwischen den Phasen zu wechseln. Das Guide-Panel rechts bietet kontextbezogene Tipps und Reflexionsfragen. Fahren Sie mit der Maus &uuml;ber die <strong style="color:var(--accent2)">(i)</strong>-Symbole f&uuml;r zus&auml;tzliche Hilfe.</div>
+    <div class="welcome-footer">
+      <label class="welcome-check"><input type="checkbox" id="welcome-hide-check"> Nicht mehr anzeigen</label>
+      <button class="welcome-start" onclick="closeWelcome()">Los geht's</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ====== ICONS (placeholders, will be replaced) ======
@@ -189,7 +256,7 @@ const D = {
 };
 
 const STEPS = [
-  {id:'start',label:'Kundenprofil',sub:'Grunddaten',num:'0'},
+  {id:'start',label:'Kundenprofil',sub:'Grunddaten',num:'\u25CB'},
   {id:'m1',label:'Meine St\u00e4rken',sub:'M1',num:'M1'},
   {id:'di2',label:'Dialog',sub:'DI2',num:'DI'},
   {id:'i3',label:'Intensives Handeln',sub:'I3',num:'I3'},
@@ -237,6 +304,73 @@ const GUIDES = {
   ]}
 };
 
+// ====== BALLOON TOOLTIPS ======
+function tt(text, title, pos) {
+  let cls = '';
+  if (pos === 'right') cls = ' tt-right';
+  else if (pos === 'left') cls = ' tt-left';
+  else if (pos === 'down') cls = ' tt-down';
+  else if (pos === 'down-right') cls = ' tt-down tt-right';
+  const titleHtml = title ? `<div class="tt-balloon-title">${title}</div>` : '';
+  return `<span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon${cls}">${titleHtml}${text}</span></span>`;
+}
+
+const TT = {
+  // Header buttons
+  excelImport: {t:'Importieren Sie eine bestehende DINAMIS Taktische Excel-Datei. Alle Daten werden automatisch in die Felder übernommen.', h:'Excel Import'},
+  zwischenspeichern: {t:'Speichert den aktuellen Stand als JSON-Datei auf Ihrem Computer. So können Sie später dort weitermachen, wo Sie aufgehört haben.', h:'Zwischenspeichern'},
+  htmlAusgabe: {t:'Öffnet eine druckbare A4-Ansicht aller eingegebenen Daten in einem neuen Tab. Ideal für Meetings und Präsentationen.', h:'HTML Ausgabe'},
+  excelExport: {t:'Exportiert alle eingegebenen Daten als Excel-Datei. Das Format ist kompatibel mit der DINAMIS Taktischen Excel-Vorlage.', h:'Excel Export'},
+  // Sidebar
+  sidebar: {t:'Navigieren Sie hier zwischen den 6 DINAMIS-Phasen. Grüne Markierungen zeigen bereits ausgefüllte Bereiche.', h:'Navigation'},
+  guidePanel: {t:'Kontextbezogene Tipps und Reflexionsfragen für die aktuelle Phase. Nutzen Sie diese als Inspiration beim Ausfüllen.', h:'Anleitung'},
+  // Start
+  importZone: {t:'Ziehen Sie eine DINAMIS Excel-Datei hierher oder klicken Sie, um eine Datei auszuwählen. Unterstützte Formate: .xlsx und .xls', h:'Datei importieren'},
+  nameField: {t:'Geben Sie den Projekt- oder Kundennamen ein. Dieser erscheint auf allen Exporten und in der Navigation.', h:'Name / Projekt'},
+  segmentField: {t:'Das Marktsegment oder die Branche des Kunden. Hilft bei der strategischen Einordnung.', h:'Segment'},
+  potentialField: {t:'Geschätztes Umsatzpotential in EUR. Wird für die Priorisierung und Analyse verwendet.', h:'Potential'},
+  // M1
+  m1Title: {t:'Hier erfassen Sie Ihre Verkaufskompetenz, Ihren überzeugenden Geschäftsgrund und Ihre Wettbewerbsposition.', h:'M1 - Meine Stärken'},
+  produktvorteile: {t:'Listen Sie die 5 wichtigsten Vorteile Ihres Produkts oder Services aus Kundensicht auf. Denken Sie dabei an konkreten Mehrwert.', h:'Produktvorteile'},
+  geschaeftsgrund: {t:'Warum sollte der Kunde gerade jetzt bei Ihnen kaufen? Verbinden Sie Kundenprobleme mit Ihren Lösungen.', h:'Überzeugender Geschäftsgrund'},
+  differenzierung: {t:'Was unterscheidet Sie wirklich vom Wettbewerb? Fokussieren Sie auf echte Alleinstellungsmerkmale.', h:'Differenzierung'},
+  abgrenzung: {t:'Konkrete Argumente, warum Ihr Angebot besser passt als das der Mitbewerber.', h:'Abgrenzungsargumente'},
+  // DI2
+  di2Title: {t:'Phase des aktiven Zuhörens und Verstehens. Hier entwickeln Sie Vertrauen durch gezielte Fragen.', h:'DI2 - Dialog'},
+  fragetechniken: {t:'Drei Fragetypen helfen Ihnen, den Kunden wirklich zu verstehen: Bestätigungsfragen, Informationsfragen und Einstellungsfragen.', h:'Fragetechniken'},
+  herausforderung: {t:'Die größten Herausforderungen und Schmerzpunkte Ihres Kunden. Je konkreter, desto besser.', h:'Herausforderungen'},
+  vertrauensaufbau: {t:'6 Bausteine für Vertrauen: Kundennutzen, Dringlichkeit, persönliche Relevanz, Referenzen, beidseitige Vorteile, Mehrwert.', h:'Vertrauensaufbau'},
+  // I3
+  i3Title: {t:'Hier sichern Sie verbindliche Zusagen, identifizieren Grundprobleme und schaffen Entscheidungssicherheit.', h:'I3 - Intensives Handeln'},
+  massnahmenverp: {t:'Welche konkreten Schritte möchten Sie mit dem Kunden vereinbaren? Formulieren Sie verbindlich.', h:'Maßnahmenverpflichtung'},
+  grundprobleme: {t:'Welche tieferliegenden Probleme könnten den Verkauf gefährden? Preis, Budget, interne Politik?', h:'Grundprobleme'},
+  loesungsansaetze: {t:'Ihre konkreten Lösungen für die identifizierten Grundprobleme.', h:'Lösungsansätze'},
+  entscheidungen: {t:'Wie schaffen Sie beim Kunden die Sicherheit, die richtige Entscheidung zu treffen?', h:'Entscheidungssicherheit'},
+  // N4
+  n4Title: {t:'Erfassen Sie Kaufbeeinflusser, entwickeln Sie Ihr Konzept und bereiten Sie sich auf Einwände vor.', h:'N4 - Nennen und Erkennen'},
+  kaufbeeinflusser: {t:'Wer beeinflusst die Kaufentscheidung? Entscheider, Nutzer, technische Prüfer, Berater.', h:'Kaufbeeinflusser'},
+  konzept: {t:'Ihr Lösungskonzept speziell für diesen Kunden. Was genau bieten Sie an?', h:'Konzept'},
+  einwaende: {t:'Welche Einwände erwarten Sie? Bereiten Sie sich proaktiv darauf vor.', h:'Einwände'},
+  gemeinsameLoesungen: {t:'Erarbeiten Sie Lösungen nicht gegen den Kunden, mit ihm gemeinsam.', h:'Gemeinsame Lösungen'},
+  offeneKommunikation: {t:'Fragen, die eine offene und ehrliche Kommunikation fördern.', h:'Offene Kommunikation'},
+  // A5
+  a5Title: {t:'Würdigen Sie Kundenentscheidungen, zelebrieren Sie Erfolge und bauen Sie Beziehungsexcellenz auf.', h:'A5 - Anerkennung'},
+  wuerdigen: {t:'Wie zeigen Sie dem Kunden, dass seine Entscheidung richtig und wichtig war?', h:'Würdigen'},
+  zelebrieren: {t:'Machen Sie jeden Abschluss zum positiven Erlebnis. Professionelle Übergaberituale schaffen Bindung.', h:'Erfolge zelebrieren'},
+  beziehung: {t:'Strategien, um die Geschäftsbeziehung auf ein höheres Niveau zu heben.', h:'Beziehungsexcellenz'},
+  // S6
+  s6Title: {t:'Die tiefste Ebene: Echter Mehrwert, vertrauensbasierte Partnerschaft und nachhaltige Wertschöpfung.', h:'S6 - Die Sinnfrage'},
+  mehrwert: {t:'Was ist der echte, messbare Mehrwert für den Kunden? Gehen Sie über Features hinaus.', h:'Echter Mehrwert'},
+  sinnPartnerschaft: {t:'Wie bauen Sie eine Partnerschaft auf, die auf echtem gegenseitigem Vertrauen basiert?', h:'Vertrauensbasierte Partnerschaft'},
+  wertschoepfung: {t:'Wie werden Sie strategisch relevant für den Kunden und schaffen dauerhafte Wertschöpfung?', h:'Wertschöpfungsexcellenz'}
+};
+
+function ttFor(key, pos) {
+  const d = TT[key];
+  if (!d) return '';
+  return tt(d.t, d.h, pos);
+}
+
 // ====== RENDER ======
 function renderSidebar() {
   document.getElementById('sidebar').innerHTML = STEPS.map(s =>
@@ -266,7 +400,7 @@ function isStepFilled(id) {
   }
 }
 
-function goStep(id) { currentStep=id; renderSidebar(); renderContent(); renderGuide(); }
+function goStep(id) { currentStep=id; renderSidebar(); renderContent(); renderGuide(); initAutoGrow(); }
 
 function renderGuide() {
   const g = GUIDES[currentStep];
@@ -299,19 +433,26 @@ function renderContent() {
 
 function esc(s) { if(!s) return ''; const d=document.createElement('div'); d.textContent=String(s); return d.innerHTML; }
 
+function autoGrow(el) { el.style.height='auto'; el.style.height=el.scrollHeight+'px'; }
+
+function initAutoGrow() {
+  setTimeout(function(){
+    document.querySelectorAll('.input-row textarea, textarea.auto-ta').forEach(function(ta){
+      ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px';
+    });
+  }, 50);
+}
+
 // ====== STEP RENDERERS ======
 function renderStart() {
   return `<div class="step-title">Kundenprofil</div>
     <div class="step-sub">Grunddaten des Kunden oder Projekts erfassen</div>
-    <div class="import-zone" onclick="document.getElementById('import-input').click()">
-      <p>Bestehende DINAMIS Taktische Excel-Datei importieren (Drag & Drop oder Klick)</p>
-    </div>
     <div class="form-grid">
-      <div class="form-row"><label>Name / Projekt</label><input type="text" value="${esc(D.name)}" oninput="D.name=this.value;renderSidebar()"></div>
-      <div class="form-row"><label>Segment</label><input type="text" value="${esc(D.segment)}" oninput="D.segment=this.value"></div>
+      <div class="form-row"><label>Name / Projekt ${ttFor('nameField','down')}</label><input type="text" value="${esc(D.name)}" oninput="D.name=this.value;renderSidebar()"></div>
+      <div class="form-row"><label>Segment ${ttFor('segmentField','down')}</label><input type="text" value="${esc(D.segment)}" oninput="D.segment=this.value"></div>
     </div>
     <div class="form-grid-3">
-      <div class="form-row"><label>Potential (EUR)</label><input type="number" value="${D.potential}" oninput="D.potential=this.value"></div>
+      <div class="form-row"><label>Potential (EUR) ${ttFor('potentialField','down')}</label><input type="number" value="${D.potential}" oninput="D.potential=this.value"></div>
       <div class="form-row"><label>Datum</label><input type="date" value="${D.datum}" oninput="D.datum=this.value"></div>
       <div class="form-row"><label>Letztes Update</label><input type="date" value="${D.update}" oninput="D.update=this.value"></div>
     </div>
@@ -321,7 +462,7 @@ function renderStart() {
 }
 
 function renderM1() {
-  let html = `<div class="step-title">${ICO.m1} M1 - Meine St\u00e4rken</div>
+  let html = `<div class="step-title">${ICO.m1} M1 - Meine St\u00e4rken ${ttFor('m1Title','down')}</div>
     <div class="step-sub">Verkaufskompetenz, \u00dcberzeugender Gesch\u00e4ftsgrund, Wettbewerb</div>`;
 
   html += `<div class="section-div">Verkaufskompetenz entwickeln</div>`;
@@ -331,31 +472,31 @@ function renderM1() {
   </div>
   <div class="form-grid-3">
     <div class="form-row"><label>KSV Rating</label><input type="text" value="${esc(D.m1.ksvRating)}" oninput="D.m1.ksvRating=this.value"></div>
-    <div class="form-row"><label>Meine angestrebte Position</label><input type="text" value="${esc(D.m1.position)}" oninput="D.m1.position=this.value"></div>
-    <div class="form-row"><label>Was will ich verkaufen?</label><input type="text" value="${esc(D.m1.wasVerkaufen)}" oninput="D.m1.wasVerkaufen=this.value"></div>
+    <div class="form-row"><label>Meine angestrebte Position</label><textarea class="auto-ta" rows="1" oninput="D.m1.position=this.value;autoGrow(this)">${esc(D.m1.position)}</textarea></div>
+    <div class="form-row"><label>Was will ich verkaufen?</label><textarea class="auto-ta" rows="1" oninput="D.m1.wasVerkaufen=this.value;autoGrow(this)">${esc(D.m1.wasVerkaufen)}</textarea></div>
   </div>
   <div class="form-row"><label>Bis wann?</label><input type="text" value="${esc(D.m1.bisWann)}" oninput="D.m1.bisWann=this.value" style="max-width:300px"></div>`;
 
-  html += `<div class="section-div">Produktvorteile f\u00fcr den Kunden (5)</div>`;
+  html += `<div class="section-div">Produktvorteile f\u00fcr den Kunden (5) ${ttFor('produktvorteile','down')}</div>`;
   D.m1.produktvorteile.forEach((p,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Produktvorteil..." value="${esc(p)}" oninput="D.m1.produktvorteile[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Produktvorteil..." oninput="D.m1.produktvorteile[${i}]=this.value;autoGrow(this)" rows="1">${esc(p)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">\u00dcberzeugender Gesch\u00e4ftsgrund</div>`;
+  html += `<div class="section-div">\u00dcberzeugender Gesch\u00e4ftsgrund ${ttFor('geschaeftsgrund','down')}</div>`;
   html += `<div class="form-row"><label>Notiere Deinen \u00fcberzeugenden Gesch\u00e4ftsgrund</label><textarea rows="3" oninput="D.m1.geschaeftsgrund=this.value">${esc(D.m1.geschaeftsgrund)}</textarea></div>`;
 
-  html += `<div class="section-div">Wettbewerbs Navigator</div>`;
+  html += `<div class="section-div">Wettbewerbs Navigator ${ttFor('differenzierung','down')}</div>`;
   html += `<div style="font-size:13px;font-weight:600;color:var(--accent2);margin-bottom:8px">Differenzierung</div>`;
   D.m1.differenzierung.forEach((d,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Differenzierungsmerkmal..." value="${esc(d)}" oninput="D.m1.differenzierung[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Differenzierungsmerkmal..." oninput="D.m1.differenzierung[${i}]=this.value;autoGrow(this)" rows="1">${esc(d)}</textarea></div>`;
   });
   html += `<div style="font-size:13px;font-weight:600;color:var(--accent2);margin:12px 0 8px">Abgrenzung</div>`;
   D.m1.abgrenzung.forEach((a,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Abgrenzungsargument..." value="${esc(a)}" oninput="D.m1.abgrenzung[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Abgrenzungsargument..." oninput="D.m1.abgrenzung[${i}]=this.value;autoGrow(this)" rows="1">${esc(a)}</textarea></div>`;
   });
   html += `<div class="form-grid" style="margin-top:12px">
-    <div class="form-row"><label>St\u00e4rken</label><input type="text" value="${esc(D.m1.staerkenW)}" oninput="D.m1.staerkenW=this.value"></div>
-    <div class="form-row"><label>Schw\u00e4chen</label><input type="text" value="${esc(D.m1.schwaechen)}" oninput="D.m1.schwaechen=this.value"></div>
+    <div class="form-row"><label>St\u00e4rken</label><textarea class="auto-ta" rows="1" oninput="D.m1.staerkenW=this.value;autoGrow(this)">${esc(D.m1.staerkenW)}</textarea></div>
+    <div class="form-row"><label>Schw\u00e4chen</label><textarea class="auto-ta" rows="1" oninput="D.m1.schwaechen=this.value;autoGrow(this)">${esc(D.m1.schwaechen)}</textarea></div>
   </div>`;
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
@@ -367,31 +508,31 @@ function renderM1() {
 
 function renderDI2() {
   const vtLabels = ['Wie lautet der Kundennutzen?','Wie lautet die pers\u00f6nliche Relevanz?','Welche Referenz nutzt Du?','Welche beidseitigen Vorteile hast Du definiert?','Auf welches gemeinsame Ziel fokussierst Du?','Welchen langfristigen Mehrwert kannst Du verwenden?'];
-  let html = `<div class="step-title">${ICO.di2} DI2 - Dialog</div>
+  let html = `<div class="step-title">${ICO.di2} DI2 - Dialog ${ttFor('di2Title','down')}</div>
     <div class="step-sub">Aktives Zuh\u00f6ren, Verst\u00e4ndnis als Verkaufsbasis, Vertrauensaufbau</div>`;
 
-  html += `<div class="section-div">Wo siehst Du Deine Herausforderung beim aktiven Zuh\u00f6ren?</div>`;
+  html += `<div class="section-div">Wo siehst Du Deine Herausforderung beim aktiven Zuh\u00f6ren? ${ttFor('herausforderung','down')}</div>`;
   D.di2.herausforderung.forEach((h,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Herausforderung..." value="${esc(h)}" oninput="D.di2.herausforderung[${i}]=this.value;renderSidebar()"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Herausforderung..." oninput="D.di2.herausforderung[${i}]=this.value;renderSidebar();autoGrow(this)" rows="1">${esc(h)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Fragetechniken</div>`;
+  html += `<div class="section-div">Fragetechniken ${ttFor('fragetechniken','down')}</div>`;
   html += `<div style="font-size:13px;font-weight:600;color:var(--accent2);margin-bottom:8px">Best\u00e4tigungsfragen</div>`;
   D.di2.bestaetigungsfragen.forEach((b,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Best\u00e4tigungsfrage..." value="${esc(b)}" oninput="D.di2.bestaetigungsfragen[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Best\u00e4tigungsfrage..." oninput="D.di2.bestaetigungsfragen[${i}]=this.value;autoGrow(this)" rows="1">${esc(b)}</textarea></div>`;
   });
   html += `<div style="font-size:13px;font-weight:600;color:var(--accent2);margin:12px 0 8px">Informationsfragen</div>`;
   D.di2.informationsfragen.forEach((f,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Informationsfrage..." value="${esc(f)}" oninput="D.di2.informationsfragen[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Informationsfrage..." oninput="D.di2.informationsfragen[${i}]=this.value;autoGrow(this)" rows="1">${esc(f)}</textarea></div>`;
   });
   html += `<div style="font-size:13px;font-weight:600;color:var(--accent2);margin:12px 0 8px">Einstellungsfragen</div>`;
   D.di2.einstellungsfragen.forEach((e,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Einstellungsfrage..." value="${esc(e)}" oninput="D.di2.einstellungsfragen[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Einstellungsfrage..." oninput="D.di2.einstellungsfragen[${i}]=this.value;autoGrow(this)" rows="1">${esc(e)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Vertrauensaufbau im Verkauf</div>`;
+  html += `<div class="section-div">Vertrauensaufbau im Verkauf ${ttFor('vertrauensaufbau','down')}</div>`;
   D.di2.vertrauensaufbau.forEach((v,i) => {
-    html += `<div class="input-row" style="border-left:3px solid var(--accent)"><span class="ir-num" style="font-size:10px;color:var(--text3)">${vtLabels[i]}</span><input type="text" placeholder="Deine Antwort..." value="${esc(v)}" oninput="D.di2.vertrauensaufbau[${i}]=this.value"></div>`;
+    html += `<div style="background:var(--surface);border-radius:8px;padding:10px 14px;border:1px solid var(--border2);border-left:3px solid var(--accent);margin-bottom:10px"><div style="font-size:11px;color:var(--text3);margin-bottom:6px">${vtLabels[i]}</div><input type="text" placeholder="Deine Antwort..." value="${esc(v)}" oninput="D.di2.vertrauensaufbau[${i}]=this.value" style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--text);font-size:14px;padding:4px 0;font-family:inherit" onfocus="this.style.borderBottomColor='var(--accent)'" onblur="this.style.borderBottomColor='var(--border2)'"></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
@@ -402,27 +543,27 @@ function renderDI2() {
 }
 
 function renderI3() {
-  let html = `<div class="step-title">${ICO.i3} I3 - Intensives Handeln</div>
+  let html = `<div class="step-title">${ICO.i3} I3 - Intensives Handeln ${ttFor('i3Title','down')}</div>
     <div class="step-sub">Ma\u00dfnahmenverpflichtung, Grundprobleme, Entscheidungen sichern</div>`;
 
-  html += `<div class="section-div">Fragen f\u00fcr die Ma\u00dfnahmenverpflichtung</div>`;
+  html += `<div class="section-div">Fragen f\u00fcr die Ma\u00dfnahmenverpflichtung ${ttFor('massnahmenverp','down')}</div>`;
   D.i3.massnahmenverp.forEach((m,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Frage zur Ma\u00dfnahmenverpflichtung..." value="${esc(m)}" oninput="D.i3.massnahmenverp[${i}]=this.value;renderSidebar()"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Frage zur Ma\u00dfnahmenverpflichtung..." oninput="D.i3.massnahmenverp[${i}]=this.value;renderSidebar();autoGrow(this)" rows="1">${esc(m)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Fragen zu Grundproblemen</div>`;
+  html += `<div class="section-div">Fragen zu Grundproblemen ${ttFor('grundprobleme','down')}</div>`;
   D.i3.grundprobleme.forEach((g,i) => {
-    html += `<div class="input-row" style="border-left:3px solid var(--orange)"><span class="ir-num">${i+1}</span><input type="text" placeholder="Frage zu Grundproblemen..." value="${esc(g)}" oninput="D.i3.grundprobleme[${i}]=this.value"></div>`;
+    html += `<div class="input-row" style="border-left:3px solid var(--orange)"><span class="ir-num">${i+1}</span><textarea placeholder="Frage zu Grundproblemen..." oninput="D.i3.grundprobleme[${i}]=this.value;autoGrow(this)" rows="1">${esc(g)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">L\u00f6sungsans\u00e4tze</div>`;
+  html += `<div class="section-div">L\u00f6sungsans\u00e4tze ${ttFor('loesungsansaetze','down')}</div>`;
   D.i3.loesungsansaetze.forEach((l,i) => {
-    html += `<div class="input-row" style="border-left:3px solid var(--green)"><span class="ir-num">${i+1}</span><input type="text" placeholder="L\u00f6sungsansatz..." value="${esc(l)}" oninput="D.i3.loesungsansaetze[${i}]=this.value"></div>`;
+    html += `<div class="input-row" style="border-left:3px solid var(--green)"><span class="ir-num">${i+1}</span><textarea placeholder="L\u00f6sungsansatz..." oninput="D.i3.loesungsansaetze[${i}]=this.value;autoGrow(this)" rows="1">${esc(l)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Wie schaffst Du Entscheidungssicherheit?</div>`;
+  html += `<div class="section-div">Wie schaffst Du Entscheidungssicherheit? ${ttFor('entscheidungen','down')}</div>`;
   D.i3.entscheidungen.forEach((e,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Entscheidungssicherheit..." value="${esc(e)}" oninput="D.i3.entscheidungen[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Entscheidungssicherheit..." oninput="D.i3.entscheidungen[${i}]=this.value;autoGrow(this)" rows="1">${esc(e)}</textarea></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
@@ -433,34 +574,34 @@ function renderI3() {
 }
 
 function renderN4() {
-  let html = `<div class="step-title">${ICO.n4} N4 - Nennen und Erkennen</div>
+  let html = `<div class="step-title">${ICO.n4} N4 - Nennen und Erkennen ${ttFor('n4Title','down')}</div>
     <div class="step-sub">Kundenbeobachtung, Verkaufshindernisse, Verkaufsexzellenz</div>`;
 
-  html += `<div class="section-div">Kaufbeeinflusser / Rolle</div>`;
+  html += `<div class="section-div">Kaufbeeinflusser / Rolle ${ttFor('kaufbeeinflusser','down')}</div>`;
   D.n4.kaufbeeinflusser.forEach((k,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Kaufbeeinflusser / Rolle..." value="${esc(k)}" oninput="D.n4.kaufbeeinflusser[${i}]=this.value;renderSidebar()"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Kaufbeeinflusser / Rolle..." oninput="D.n4.kaufbeeinflusser[${i}]=this.value;renderSidebar();autoGrow(this)" rows="1">${esc(k)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Konzept</div>`;
+  html += `<div class="section-div">Konzept&emsp;&emsp;&emsp;${ttFor('konzept','down')}</div>`;
   D.n4.konzept.forEach((k,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Konzeptpunkt..." value="${esc(k)}" oninput="D.n4.konzept[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Konzeptpunkt..." oninput="D.n4.konzept[${i}]=this.value;autoGrow(this)" rows="1">${esc(k)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Einw\u00e4nde &amp; Gemeinsame L\u00f6sungen</div>`;
+  html += `<div class="section-div">Einw\u00e4nde &amp; Gemeinsame L\u00f6sungen ${ttFor('einwaende','down')}</div>`;
   html += `<div class="ww-grid">
     <div class="ww-col left"><h4>Einw\u00e4nde</h4>`;
   D.n4.einwaende.forEach((e,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Einwand..." value="${esc(e)}" oninput="D.n4.einwaende[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Einwand..." oninput="D.n4.einwaende[${i}]=this.value;autoGrow(this)" rows="1">${esc(e)}</textarea></div>`;
   });
   html += `</div><div class="ww-col right"><h4>Gemeinsame L\u00f6sungen</h4>`;
   D.n4.gemeinsameLoesungen.forEach((g,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Gemeinsame L\u00f6sung..." value="${esc(g)}" oninput="D.n4.gemeinsameLoesungen[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Gemeinsame L\u00f6sung..." oninput="D.n4.gemeinsameLoesungen[${i}]=this.value;autoGrow(this)" rows="1">${esc(g)}</textarea></div>`;
   });
   html += `</div></div>`;
 
-  html += `<div class="section-div">Fragen f\u00fcr offene Kommunikation</div>`;
+  html += `<div class="section-div">Fragen f\u00fcr offene Kommunikation ${ttFor('offeneKommunikation','down')}</div>`;
   D.n4.offeneKommunikation.forEach((o,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Frage f\u00fcr offene Kommunikation..." value="${esc(o)}" oninput="D.n4.offeneKommunikation[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Frage f\u00fcr offene Kommunikation..." oninput="D.n4.offeneKommunikation[${i}]=this.value;autoGrow(this)" rows="1">${esc(o)}</textarea></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
@@ -471,22 +612,22 @@ function renderN4() {
 }
 
 function renderA5() {
-  let html = `<div class="step-title">${ICO.a5} A5 - Anerkennung</div>
+  let html = `<div class="step-title">${ICO.a5} A5 - Anerkennung ${ttFor('a5Title','down')}</div>
     <div class="step-sub">Kundenentscheidungen w\u00fcrdigen, Verkaufserfolge zelebrieren, Beziehungsexcellenz</div>`;
 
-  html += `<div class="section-div">Fragen zur Kundenentscheidung w\u00fcrdigen</div>`;
+  html += `<div class="section-div">Fragen zur Kundenentscheidung w\u00fcrdigen ${ttFor('wuerdigen','down')}</div>`;
   D.a5.wuerdigen.forEach((w,i) => {
-    html += `<div class="input-row" style="border-left:3px solid var(--green)"><span class="ir-num">${i+1}</span><input type="text" placeholder="Frage zur W\u00fcrdigung..." value="${esc(w)}" oninput="D.a5.wuerdigen[${i}]=this.value;renderSidebar()"></div>`;
+    html += `<div class="input-row" style="border-left:3px solid var(--green)"><span class="ir-num">${i+1}</span><textarea placeholder="Frage zur W\u00fcrdigung..." oninput="D.a5.wuerdigen[${i}]=this.value;renderSidebar();autoGrow(this)" rows="1">${esc(w)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Fragen zu Verkaufserfolge zelebrieren</div>`;
+  html += `<div class="section-div">Fragen zu Verkaufserfolge zelebrieren ${ttFor('zelebrieren','down')}</div>`;
   D.a5.zelebrieren.forEach((z,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Frage zum Zelebrieren..." value="${esc(z)}" oninput="D.a5.zelebrieren[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Frage zum Zelebrieren..." oninput="D.a5.zelebrieren[${i}]=this.value;autoGrow(this)" rows="1">${esc(z)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Fragen zu Beziehungsexcellenz</div>`;
+  html += `<div class="section-div">Fragen zu Beziehungsexcellenz ${ttFor('beziehung','down')}</div>`;
   D.a5.beziehung.forEach((b,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Frage zur Beziehungsexcellenz..." value="${esc(b)}" oninput="D.a5.beziehung[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Frage zur Beziehungsexcellenz..." oninput="D.a5.beziehung[${i}]=this.value;autoGrow(this)" rows="1">${esc(b)}</textarea></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
@@ -497,22 +638,22 @@ function renderA5() {
 }
 
 function renderS6() {
-  let html = `<div class="step-title">${ICO.s6} S6 - Die Sinnfrage</div>
+  let html = `<div class="step-title">${ICO.s6} S6 - Die Sinnfrage ${ttFor('s6Title','down')}</div>
     <div class="step-sub">Kundennutzen, vertrauensbasierte Partnerschaft, Wertsch\u00f6pfungsexcellenz</div>`;
 
-  html += `<div class="section-div">Fragen zu echtem Mehrwert</div>`;
+  html += `<div class="section-div">Fragen zu echtem Mehrwert ${ttFor('mehrwert','down')}</div>`;
   D.s6.mehrwert.forEach((m,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Frage zu echtem Mehrwert..." value="${esc(m)}" oninput="D.s6.mehrwert[${i}]=this.value;renderSidebar()"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Frage zu echtem Mehrwert..." oninput="D.s6.mehrwert[${i}]=this.value;renderSidebar();autoGrow(this)" rows="1">${esc(m)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Fragen zu vertrauensbasierter Partnerschaft</div>`;
+  html += `<div class="section-div">Fragen zu vertrauensbasierter Partnerschaft ${ttFor('sinnPartnerschaft','down')}</div>`;
   D.s6.sinnPartnerschaft.forEach((s,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Frage zur Partnerschaft..." value="${esc(s)}" oninput="D.s6.sinnPartnerschaft[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Frage zur Partnerschaft..." oninput="D.s6.sinnPartnerschaft[${i}]=this.value;autoGrow(this)" rows="1">${esc(s)}</textarea></div>`;
   });
 
-  html += `<div class="section-div">Fragen zur gelebten Wertsch\u00f6pfungsexcellenz</div>`;
+  html += `<div class="section-div">Fragen zur gelebten Wertsch\u00f6pfungsexcellenz ${ttFor('wertschoepfung','down')}</div>`;
   D.s6.wertschoepfung.forEach((w,i) => {
-    html += `<div class="input-row"><span class="ir-num">${i+1}</span><input type="text" placeholder="Frage zur Wertsch\u00f6pfungsexcellenz..." value="${esc(w)}" oninput="D.s6.wertschoepfung[${i}]=this.value"></div>`;
+    html += `<div class="input-row"><span class="ir-num">${i+1}</span><textarea placeholder="Frage zur Wertsch\u00f6pfungsexcellenz..." oninput="D.s6.wertschoepfung[${i}]=this.value;autoGrow(this)" rows="1">${esc(w)}</textarea></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
@@ -683,14 +824,36 @@ function openHTMLAusgabe() {
     wuerdigen:D.a5.wuerdigen, zelebrieren:D.a5.zelebrieren, beziehung:D.a5.beziehung,
     mehrwert:D.s6.mehrwert, sinnPartnerschaft:D.s6.sinnPartnerschaft, wertschoepfung:D.s6.wertschoepfung
   };
-  const json = encodeURIComponent(JSON.stringify(data));
-  const a = document.createElement('a');
-  a.href = 'taktisch-ausgabe.html#' + json;
-  a.target = '_blank';
-  a.rel = 'noopener';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  try {
+    const json = encodeURIComponent(JSON.stringify(data));
+    // Daten zuerst lokal speichern als Fallback
+    try { localStorage.setItem('dinamis_ausgabe_data', JSON.stringify(data)); } catch(x) {}
+    const url = 'ausgabe.html#' + json;
+    const w = window.open(url, '_blank');
+    if (!w || w.closed) {
+      // Fallback: Im gleichen Tab oeffnen
+      window.location.href = url;
+    }
+  } catch(e) {
+    alert('Fehler beim \u00d6ffnen der Ausgabe: ' + e.message);
+  }
+}
+
+// ====== WILLKOMMENS-MODAL ======
+function closeWelcome() {
+  const modal = document.getElementById('welcome-modal');
+  if (modal) modal.classList.add('hidden');
+  const cb = document.getElementById('welcome-hide-check');
+  if (cb && cb.checked) {
+    try { localStorage.setItem('dinamis_hide_welcome', '1'); } catch(e) {}
+  }
+}
+function showWelcome() {
+  try {
+    if (localStorage.getItem('dinamis_hide_welcome') === '1') return;
+  } catch(e) {}
+  const modal = document.getElementById('welcome-modal');
+  if (modal) modal.classList.remove('hidden');
 }
 
 // ====== INIT ======
@@ -709,6 +872,8 @@ function init() {
   renderSidebar();
   renderContent();
   renderGuide();
+  initAutoGrow();
+  showWelcome();
 }
 init();
 </script>

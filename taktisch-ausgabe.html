@@ -195,6 +195,9 @@ function renderPage1() {
   const la = pad(D.loesungsansaetze, 3);
   const et = pad(D.entscheidungen, 5);
 
+  const bf = pad(D.bestaetigungsfragen, 2);
+  const inf = pad(D.informationsfragen, 2);
+  const ef = pad(D.einstellungsfragen, 2);
   const vtLabels = ['Kundennutzen','Pers\u00f6nliche Relevanz','Referenz','Beidseitige Vorteile','Gemeinsames Ziel','Langfristiger Mehrwert'];
 
   return `<div class="page">
@@ -246,14 +249,14 @@ function renderPage1() {
       </div>
       <!-- Col 3: Aktives Zuhören -->
       <div class="col">
-        <div class="col-hdr clr-gray" style="font-size:8px">Aktives Zuh&ouml;ren als Verkaufskompetenz</div>
-        <div class="guide">Die Kraft der Golden Silence nutzen</div>
-        <div class="guide">Kundenorientierte Pr&auml;senz zeigen</div>
-        <div class="guide">Konzentriertes Zuh&ouml;ren praktizieren</div>
-        <div class="col-hdr clr-gray" style="font-size:8px;margin-top:2px">Verst&auml;ndnis als Verkaufsbasis</div>
-        <div class="guide">Best&auml;tigungsfragen</div>
-        <div class="guide">Informationsfragen</div>
-        <div class="guide">Einstellungsfragen</div>
+        <div class="col-hdr clr-gray" style="font-size:8px">Wo siehst Du Deine Herausforderung?</div>
+        ${nlist(pad(D.herausforderung, 4), 4, '#059669')}
+        <div class="col-hdr clr-gray" style="font-size:8px;margin-top:2px">Best&auml;tigungsfragen</div>
+        ${nlist(bf, 2, '#059669')}
+        <div class="col-hdr clr-gray" style="font-size:8px">Informationsfragen</div>
+        ${nlist(inf, 2, '#059669')}
+        <div class="col-hdr clr-gray" style="font-size:8px">Einstellungsfragen</div>
+        ${nlist(ef, 2, '#059669')}
       </div>
       <!-- Col 4: Vertrauensaufbau -->
       <div class="col">
@@ -898,7 +901,11 @@ function checkUrlData() {
   } catch(e) {}
   try {
     const saved = sessionStorage.getItem('dinamis_takt_data');
-    if (saved) { Object.assign(D, JSON.parse(saved)); }
+    if (saved) { Object.assign(D, JSON.parse(saved)); render(); return; }
+  } catch(e) {}
+  try {
+    const fallback = localStorage.getItem('dinamis_ausgabe_data');
+    if (fallback) { Object.assign(D, JSON.parse(fallback)); render(); return; }
   } catch(e) {}
 }
 
