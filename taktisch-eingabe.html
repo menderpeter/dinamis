@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>DINAMIS - Taktische Kundengewinnung</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
@@ -157,13 +160,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <body>
 
 <div class="header">
+  <button class="btn btn-outline btn-sm" onclick="window.location.href='index.html'" style="margin-right:8px;font-size:16px;padding:4px 10px;line-height:1">&larr;</button>
   <h1>DINAMIS<span>.</span> Taktische Eingabe</h1>
   <div class="header-actions">
-    <span class="tt-hdr-wrap"><button class="btn btn-outline btn-sm" onclick="document.getElementById('import-input').click()">Excel importieren</button><span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">Excel Import</div>Importieren Sie eine bestehende DINAMIS Taktische Excel-Datei. Alle Daten werden automatisch in die Felder übernommen.</span></span></span>
+    <span class="tt-hdr-wrap"><button class="btn btn-outline btn-sm" onclick="document.getElementById('import-input').click()">Excel importieren</button><span class="tt-wrap" onclick="ttToggle(this,event)" onmouseenter="ttOpen(this)" onmouseleave="ttClose(this)"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">Excel Import</div>Importieren Sie eine bestehende DINAMIS Taktische Excel-Datei. Alle Daten werden automatisch in die Felder übernommen.</span></span></span>
     <input type="file" id="import-input" accept=".xlsx,.xls" style="display:none" onchange="importExcel(this.files[0])">
-    <span class="tt-hdr-wrap"><button class="btn btn-outline btn-sm" onclick="saveLocal()">Zwischenspeichern</button><span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">Zwischenspeichern</div>Speichert den aktuellen Stand als JSON-Datei. So können Sie später weitermachen, wo Sie aufgehört haben.</span></span></span>
-    <span class="tt-hdr-wrap"><button class="btn btn-sm" style="background:var(--orange)" onclick="openHTMLAusgabe()">HTML Ausgabe</button><span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">HTML Ausgabe</div>Öffnet eine druckbare A4-Ansicht aller Daten in einem neuen Tab. Ideal für Meetings.</span></span></span>
-    <span class="tt-hdr-wrap"><button class="btn btn-green btn-sm" onclick="exportExcel()">Als Excel exportieren</button><span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">Excel Export</div>Exportiert alle Daten als Excel-Datei, kompatibel mit der DINAMIS Taktischen Vorlage.</span></span></span>
+    <span class="tt-hdr-wrap"><button class="btn btn-outline btn-sm" onclick="saveLocal()">Zwischenspeichern</button><span class="tt-wrap" onclick="ttToggle(this,event)" onmouseenter="ttOpen(this)" onmouseleave="ttClose(this)"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">Zwischenspeichern</div>Speichert den aktuellen Stand als JSON-Datei. So können Sie später weitermachen, wo Sie aufgehört haben.</span></span></span>
+    <span class="tt-hdr-wrap"><button class="btn btn-sm" style="background:var(--orange)" onclick="openHTMLAusgabe()">HTML Ausgabe</button><span class="tt-wrap" onclick="ttToggle(this,event)" onmouseenter="ttOpen(this)" onmouseleave="ttClose(this)"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">HTML Ausgabe</div>Öffnet eine druckbare A4-Ansicht aller Daten in einem neuen Tab. Ideal für Meetings.</span></span></span>
+    <span class="tt-hdr-wrap"><button class="btn btn-green btn-sm" onclick="exportExcel()">Als Excel exportieren</button><span class="tt-wrap" onclick="ttToggle(this,event)" onmouseenter="ttOpen(this)" onmouseleave="ttClose(this)"><span class="tt-icon">i</span><span class="tt-balloon tt-down tt-right"><div class="tt-balloon-title">Excel Export</div>Exportiert alle Daten als Excel-Datei, kompatibel mit der DINAMIS Taktischen Vorlage.</span></span></span>
   </div>
 </div>
 
@@ -306,6 +310,17 @@ const GUIDES = {
 };
 
 // ====== BALLOON TOOLTIPS ======
+function ttToggle(el,e){
+  if(e) e.stopPropagation();
+  var b=el.querySelector('.tt-balloon');
+  if(!b) return;
+  var open=b.classList.contains('tt-show');
+  document.querySelectorAll('.tt-balloon.tt-show').forEach(function(x){x.classList.remove('tt-show')});
+  if(!open) b.classList.add('tt-show');
+}
+function ttOpen(el){if(!('ontouchstart' in window)){var b=el.querySelector('.tt-balloon');if(b)b.classList.add('tt-show')}}
+function ttClose(el){if(!('ontouchstart' in window)){var b=el.querySelector('.tt-balloon');if(b)b.classList.remove('tt-show')}}
+document.addEventListener('click',function(){document.querySelectorAll('.tt-balloon.tt-show').forEach(function(x){x.classList.remove('tt-show')})});
 function tt(text, title, pos) {
   let cls = '';
   if (pos === 'right') cls = ' tt-right';
@@ -313,7 +328,7 @@ function tt(text, title, pos) {
   else if (pos === 'down') cls = ' tt-down';
   else if (pos === 'down-right') cls = ' tt-down tt-right';
   const titleHtml = title ? `<div class="tt-balloon-title">${title}</div>` : '';
-  return `<span class="tt-wrap" onclick="this.querySelector('.tt-balloon').classList.toggle('tt-show')"><span class="tt-icon">i</span><span class="tt-balloon${cls}">${titleHtml}${text}</span></span>`;
+  return `<span class="tt-wrap" onclick="ttToggle(this,event)" onmouseenter="ttOpen(this)" onmouseleave="ttClose(this)"><span class="tt-icon">i</span><span class="tt-balloon${cls}">${titleHtml}${text}</span></span>`;
 }
 
 const TT = {
@@ -449,8 +464,8 @@ function renderStart() {
   return `<div class="step-title">Kundenprofil</div>
     <div class="step-sub">Grunddaten des Kunden oder Projekts erfassen</div>
     <div class="form-grid">
-      <div class="form-row"><label>Name / Projekt ${ttFor('nameField','down')}</label><input type="text" value="${esc(D.name)}" oninput="D.name=this.value;renderSidebar()"></div>
-      <div class="form-row"><label>Segment ${ttFor('segmentField','down')}</label><input type="text" value="${esc(D.segment)}" oninput="D.segment=this.value"></div>
+      <div class="form-row"><label>Name / Projekt ${ttFor('nameField','down')}</label><textarea class="auto-ta" rows="1" oninput="D.name=this.value;autoGrow(this);renderSidebar()">${esc(D.name)}</textarea></div>
+      <div class="form-row"><label>Segment ${ttFor('segmentField','down')}</label><textarea class="auto-ta" rows="1" oninput="D.segment=this.value;autoGrow(this)">${esc(D.segment)}</textarea></div>
     </div>
     <div class="form-grid-3">
       <div class="form-row"><label>Potential (EUR) ${ttFor('potentialField','down')}</label><input type="number" value="${D.potential}" oninput="D.potential=this.value"></div>
@@ -468,15 +483,15 @@ function renderM1() {
 
   html += `<div class="section-div">Verkaufskompetenz entwickeln</div>`;
   html += `<div class="form-grid">
-    <div class="form-row"><label>Kundenname / Branche</label><input type="text" value="${esc(D.m1.kundenname)}" oninput="D.m1.kundenname=this.value;renderSidebar()"></div>
-    <div class="form-row"><label>Anzahl MA</label><input type="text" value="${esc(D.m1.anzahlMA)}" oninput="D.m1.anzahlMA=this.value"></div>
+    <div class="form-row"><label>Kundenname / Branche</label><textarea class="auto-ta" rows="1" oninput="D.m1.kundenname=this.value;autoGrow(this);renderSidebar()">${esc(D.m1.kundenname)}</textarea></div>
+    <div class="form-row"><label>Anzahl MA</label><textarea class="auto-ta" rows="1" oninput="D.m1.anzahlMA=this.value;autoGrow(this)">${esc(D.m1.anzahlMA)}</textarea></div>
   </div>
   <div class="form-grid-3">
-    <div class="form-row"><label>KSV Rating</label><input type="text" value="${esc(D.m1.ksvRating)}" oninput="D.m1.ksvRating=this.value"></div>
+    <div class="form-row"><label>KSV Rating</label><textarea class="auto-ta" rows="1" oninput="D.m1.ksvRating=this.value;autoGrow(this)">${esc(D.m1.ksvRating)}</textarea></div>
     <div class="form-row"><label>Meine angestrebte Position</label><textarea class="auto-ta" rows="1" oninput="D.m1.position=this.value;autoGrow(this)">${esc(D.m1.position)}</textarea></div>
     <div class="form-row"><label>Was will ich verkaufen?</label><textarea class="auto-ta" rows="1" oninput="D.m1.wasVerkaufen=this.value;autoGrow(this)">${esc(D.m1.wasVerkaufen)}</textarea></div>
   </div>
-  <div class="form-row"><label>Bis wann?</label><input type="text" value="${esc(D.m1.bisWann)}" oninput="D.m1.bisWann=this.value" style="max-width:300px"></div>`;
+  <div class="form-row"><label>Bis wann?</label><textarea class="auto-ta" rows="1" oninput="D.m1.bisWann=this.value;autoGrow(this)" style="max-width:300px">${esc(D.m1.bisWann)}</textarea></div>`;
 
   html += `<div class="section-div">Produktvorteile f\u00fcr den Kunden (5) ${ttFor('produktvorteile','down')}</div>`;
   D.m1.produktvorteile.forEach((p,i) => {
@@ -533,7 +548,7 @@ function renderDI2() {
 
   html += `<div class="section-div">Vertrauensaufbau im Verkauf ${ttFor('vertrauensaufbau','down')}</div>`;
   D.di2.vertrauensaufbau.forEach((v,i) => {
-    html += `<div style="background:var(--surface);border-radius:8px;padding:10px 14px;border:1px solid var(--border2);border-left:3px solid var(--accent);margin-bottom:10px"><div style="font-size:11px;color:var(--text3);margin-bottom:6px">${vtLabels[i]}</div><input type="text" placeholder="Deine Antwort..." value="${esc(v)}" oninput="D.di2.vertrauensaufbau[${i}]=this.value" style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--text);font-size:14px;padding:4px 0;font-family:inherit" onfocus="this.style.borderBottomColor='var(--accent)'" onblur="this.style.borderBottomColor='var(--border2)'"></div>`;
+    html += `<div style="background:var(--surface);border-radius:8px;padding:10px 14px;border:1px solid var(--border2);border-left:3px solid var(--accent);margin-bottom:10px"><div style="font-size:11px;color:var(--text3);margin-bottom:6px">${vtLabels[i]}</div><textarea placeholder="Deine Antwort..." oninput="D.di2.vertrauensaufbau[${i}]=this.value;autoGrow(this)" rows="1" style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--text);font-size:14px;padding:4px 0;font-family:inherit;resize:none;overflow:hidden" onfocus="this.style.borderBottomColor='var(--accent)'" onblur="this.style.borderBottomColor='var(--border2)'">${esc(v)}</textarea></div>`;
   });
 
   html += `<div style="margin-top:24px;display:flex;justify-content:space-between">
